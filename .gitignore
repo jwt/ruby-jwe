@@ -1,0 +1,9 @@
+tmp
+*.gem
+.rvmrc
+bundle
+.bundle
+.rbenv-version
+.rbx
+/.ruby-gemset
+/.ruby-version
