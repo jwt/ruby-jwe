@@ -1,3 +1,6 @@
+require 'jwe/enc/a128cbc_hs256'
+require 'jwe/enc/a192cbc_hs384'
+require 'jwe/enc/a256cbc_hs512'
 require 'jwe/enc/a128gcm'
 require 'jwe/enc/a192gcm'
 require 'jwe/enc/a256gcm'
@@ -7,26 +10,56 @@ gcm = [
     class: JWE::Enc::A128gcm,
     keylen: 16,
     helloworld: "\"\xC6\xE4h\x8AI\x83\x90v\xAF\xE2\x11".force_encoding('BINARY'),
-    tag: "\x85|\xF7\xE1\x94\tVG\x84\xE1\xA8\x81\a\xF4\xC60".force_encoding('BINARY')
+    tag: "\x85|\xF7\xE1\x94\tVG\x84\xE1\xA8\x81\a\xF4\xC60".force_encoding('BINARY'),
+    ivlen: 12,
+    iv: "\x0" * 12
   },
   {
     class: JWE::Enc::A192gcm,
     keylen: 24,
     helloworld: "\x9F\xA4\xEC\xCCa\x86\tRO\xD7\xE3\x8D".force_encoding('BINARY'),
-    tag: "\xF6\xC0\xB8\x91A\xB1\xF0}\xD4u\xD0_\xCD\xA7\x17'".force_encoding('BINARY')
+    tag: "\xF6\xC0\xB8\x91A\xB1\xF0}\xD4u\xD0_\xCD\xA7\x17'".force_encoding('BINARY'),
+    ivlen: 12,
+    iv: "\x0" * 12
   },
   {
     class: JWE::Enc::A256gcm,
     keylen: 32,
     helloworld: "\xFDq\xDC\xDD\x87\x9DK\x97\x03G\x99\f".force_encoding('BINARY'),
-    tag: "\xC6\xF1\r\xDD\x14\x7Fqf,6\x0EK\x7F\x9D\x1D\t".force_encoding('BINARY')
+    tag: "\xC6\xF1\r\xDD\x14\x7Fqf,6\x0EK\x7F\x9D\x1D\t".force_encoding('BINARY'),
+    ivlen: 12,
+    iv: "\x0" * 12
+  },
+  {
+    class: JWE::Enc::A128cbcHs256,
+    keylen: 32,
+    helloworld: "\a\x02F\xA4m%\xDFH\xB4\xA4.\xBF:\xBF$\xE2".force_encoding('BINARY'),
+    tag: "\xD2\xC2\xA5M\xF1e\x00\xDB}\xDB\x15\x9F\xFF\x8A\x7F\x94".force_encoding('BINARY'),
+    ivlen: 16,
+    iv: "\x0" * 16
+  },
+  {
+    class: JWE::Enc::A192cbcHs384,
+    keylen: 48,
+    helloworld: "p\xFES\xF0\xB4\xCC]8\x1D\xDE\x8Dt\xE7tMh".force_encoding('BINARY'),
+    tag: "\xEA\xF4\xD73M\xC6\x1D\x13\x0E\x9E\xAE%L\xD3\x04#\x80:\xA8}\xD7\x16E{".force_encoding('BINARY'),
+    ivlen: 16,
+    iv: "\x0" * 16
+  },
+  {
+    class: JWE::Enc::A256cbcHs512,
+    keylen: 64,
+    helloworld: "c\xFD\\\xB9Z\xB6\xE3\xB7\xEE\xA1\xD8\xDF\xB5\xB2\xF8\xEB".force_encoding('BINARY'),
+    tag: "\xD2W\xCAE\xBC\xE9\xC5\xCF\xD5\xE0\x88@j\xE4\xA1-\x16\xDA\x8F5(\x1D\x0E\x15.\xDC\x11\x12\x00`\xCER".force_encoding('BINARY'),
+    ivlen: 16,
+    iv: "\x0" * 16
   }
 ]
 
 gcm.each do |group|
   describe group[:class] do
     let(:klass) { group[:class] }
-    let(:key) { 'a' * 32 }
+    let(:key) { 'a' * group[:keylen] }
     let(:plaintext) { 'hello world!' }
 
     describe '#encrypt' do
@@ -39,12 +72,12 @@ gcm.each do |group|
 
       context 'with a valid key' do
         it 'returns the encrypted payload' do
-          enc = klass.new(key, "\x0" * 12)
-          expect(enc.encrypt(plaintext, nil).force_encoding('BINARY')).to eq group[:helloworld]
+          enc = klass.new(key, group[:iv])
+          expect(enc.encrypt(plaintext, '').force_encoding('BINARY')).to eq group[:helloworld]
         end
 
         it 'sets an authentication tag' do
-          enc = klass.new(key, "\x0" * 12)
+          enc = klass.new(key, group[:iv])
           enc.encrypt(plaintext, '')
           expect(enc.tag).to eq group[:tag]
         end
@@ -62,7 +95,7 @@ gcm.each do |group|
       context 'with a valid key' do
         context 'when a valid tag is authenticated' do
           it 'returns the plaintext' do
-            enc = klass.new(key, "\x0" * 12)
+            enc = klass.new(key, group[:iv])
             enc.tag = group[:tag]
             expect(enc.decrypt(group[:helloworld], '')).to eq plaintext
           end
@@ -70,7 +103,7 @@ gcm.each do |group|
 
         context 'when the tag is not valid' do
           it 'raises an error' do
-            enc = klass.new(key, "\x0" * 12)
+            enc = klass.new(key, group[:iv])
             enc.tag = "random"
             expect { enc.decrypt(group[:helloworld], '') }.to raise_error(JWE::InvalidData)
           end
@@ -78,14 +111,14 @@ gcm.each do |group|
 
         context 'when the tag is not set' do
           it 'raises an error' do
-            enc = klass.new(key, "\x0" * 12)
+            enc = klass.new(key, group[:iv])
             expect { enc.decrypt(group[:helloworld], '') }.to raise_error(JWE::InvalidData)
           end
         end
 
         context 'when the ciphertext is not valid' do
           it 'raises an error' do
-            enc = klass.new(key, "\x0" * 12)
+            enc = klass.new(key, group[:iv])
             enc.tag = group[:tag]
             expect { enc.decrypt("random", '') }.to raise_error(JWE::InvalidData)
           end
@@ -127,8 +160,8 @@ gcm.each do |group|
 
     describe '#iv' do
       context 'when an iv is not specified in initialization' do
-        it "returns a randomly generated 12-bytes iv" do
-          expect(klass.new.iv.length).to eq 12
+        it "returns a randomly generated #{group[:ivlen]}-bytes iv" do
+          expect(klass.new.iv.length).to eq group[:ivlen]
         end
       end
 
