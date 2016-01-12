@@ -16,7 +16,7 @@ module JWE
         cipher.encrypt
         cipher.key = cek
         cipher.iv = iv
-        #cipher.auth_data = authenticated_data
+        cipher.auth_data = authenticated_data
 
         ciphertext = cipher.update(cleartext) + cipher.final
         self.tag = cipher.auth_tag
