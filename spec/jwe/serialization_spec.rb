@@ -10,5 +10,9 @@ describe JWE::Serialization::Compact do
     it 'returns an array with the 5 components' do
       expect(JWE::Serialization::Compact.decode('YQ.Yg.Yw.ZA.ZQ')).to eq [ 'a', 'b', 'c', 'd', 'e' ]
     end
+
+    it 'raises an error when passed a badly formatted payload' do
+      expect { JWE::Serialization::Compact.decode('YQ.YQ.Yg.Yw.ZA.ZQ') }.to raise_error(JWE::DecodeError)
+    end
   end
 end
