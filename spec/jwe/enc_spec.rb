@@ -5,6 +5,18 @@ require 'jwe/enc/a128gcm'
 require 'jwe/enc/a192gcm'
 require 'jwe/enc/a256gcm'
 
+describe JWE::Enc do
+  describe '.for' do
+    it 'returns a class for the specified enc' do
+      expect(JWE::Enc.for('A128GCM')).to eq JWE::Enc::A128gcm
+    end
+
+    it 'raises an error for a not-implemented enc' do
+      expect { JWE::Enc.for('ERSA-4096-MAGIC') }.to raise_error(JWE::NotImplementedError)
+    end
+  end
+end
+
 gcm = [
   {
     class: JWE::Enc::A128gcm,

@@ -3,6 +3,18 @@ require 'jwe/alg/rsa_oaep'
 require 'jwe/alg/rsa15'
 require 'openssl'
 
+describe JWE::Alg do
+  describe '.for' do
+    it 'returns a class for the specified alg' do
+      expect(JWE::Alg.for('RSA-OAEP')).to eq JWE::Alg::RsaOaep
+    end
+
+    it 'raises an error for a not-implemented alg' do
+      expect { JWE::Alg.for('ERSA-4096-MAGIC') }.to raise_error(JWE::NotImplementedError)
+    end
+  end
+end
+
 describe JWE::Alg::Dir do
   # The direct encryption method does not Encrypt the CEK.
   # When building the final JWE object, the "Encrypted CEK" part is left blank

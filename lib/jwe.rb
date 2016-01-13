@@ -5,10 +5,9 @@ require 'securerandom'
 
 require 'jwe/base64'
 require 'jwe/serialization/compact'
-
-Dir[File.dirname(__FILE__) + '/jwe/alg/*.rb'].each { |alg| require alg }
-Dir[File.dirname(__FILE__) + '/jwe/enc/*.rb'].each { |enc| require enc }
-Dir[File.dirname(__FILE__) + '/jwe/zip/*.rb'].each { |enc| require enc }
+require 'jwe/alg'
+require 'jwe/enc'
+require 'jwe/zip'
 
 module JWE
   class DecodeError < Exception; end
