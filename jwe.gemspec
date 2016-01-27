@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = JWE::VERSION
   s.summary     = 'JSON Web Encryption implementation in Ruby'
   s.description = 'A Ruby implementation of the RFC 7516 JSON Web Encryption (JWE) standard'
-  s.authors     = [ 'Francesco Boffa' ]
+  s.authors     = ['Francesco Boffa']
   s.email       = 'fra.boffa@gmail.com'
   s.homepage    = 'http://github.com/aomega08/jwe'
   s.license     = 'MIT'

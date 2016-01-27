@@ -7,11 +7,11 @@ module JWE
         self.key = key
       end
 
-      def encrypt(cek)
+      def encrypt(_cek)
         ''
       end
 
-      def decrypt(encrypted_cek)
+      def decrypt(_encrypted_cek)
         key
       end
     end

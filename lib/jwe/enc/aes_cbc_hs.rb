@@ -11,7 +11,7 @@ module JWE
       end
 
       def encrypt(cleartext, authenticated_data)
-        raise JWE::BadCEK.new("The supplied key is invalid. Required length: #{key_length}") if cek.length != key_length
+        raiseJWE::BadCEK.new("The supplied key is invalid. Required length: #{key_length}") if cek.length != key_length
 
         cipher.encrypt
         cipher.key = enc_key
@@ -22,19 +22,19 @@ module JWE
 
         to_sign = authenticated_data + iv + ciphertext + length
         signature = OpenSSL::HMAC.digest(OpenSSL::Digest.new(hash_name), mac_key, to_sign)
-        self.tag = signature[0 ... mac_key.length]
+        self.tag = signature[0...mac_key.length]
 
         ciphertext
       end
 
       def decrypt(ciphertext, authenticated_data)
-        raise JWE::BadCEK.new("The supplied key is invalid. Required length: #{key_length}") if cek.length != key_length
+        raiseJWE::BadCEK.new("The supplied key is invalid. Required length: #{key_length}") if cek.length != key_length
 
         length = [ciphertext.length * 8].pack('Q>') # 64bit big endian
         to_sign = authenticated_data + iv + ciphertext + length
         signature = OpenSSL::HMAC.digest(OpenSSL::Digest.new(hash_name), mac_key, to_sign)
-        if signature[0 ... mac_key.length] != tag
-          raise JWE::InvalidData.new("Authentication tag verification failed")
+        if signature[0...mac_key.length] != tag
+          raiseJWE::InvalidData.new('Authentication tag verification failed')
         end
 
         cipher.decrypt
@@ -43,7 +43,7 @@ module JWE
 
         cipher.update(ciphertext) + cipher.final
       rescue OpenSSL::Cipher::CipherError
-        raise JWE::InvalidData.new("Invalid ciphertext or authentication tag")
+        raise JWE::InvalidData.new('Invalid ciphertext or authentication tag')
       end
 
       def iv
@@ -55,11 +55,11 @@ module JWE
       end
 
       def mac_key
-        cek[0 ... key_length / 2]
+        cek[0...key_length / 2]
       end
 
       def enc_key
-        cek[key_length / 2 .. -1 ]
+        cek[key_length / 2..-1]
       end
 
       def cipher
@@ -69,7 +69,7 @@ module JWE
       end
 
       def tag
-        @tag || ""
+        @tag || ''
       end
 
       def self.included(base)

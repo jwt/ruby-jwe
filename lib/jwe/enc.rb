@@ -9,7 +9,7 @@ module JWE
   module Enc
     def self.for(enc)
       klass = enc.gsub(/[-\+]/, '_').downcase.sub(/^[a-z\d]*/) { $&.capitalize }
-      klass.gsub!(/_([a-z\d]*)/i) { $1.capitalize }
+      klass.gsub!(/_([a-z\d]*)/i) { Regexp.last_match(1).capitalize }
       const_get(klass)
 
     rescue NameError

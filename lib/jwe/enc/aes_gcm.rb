@@ -11,7 +11,7 @@ module JWE
       end
 
       def encrypt(cleartext, authenticated_data)
-        raise JWE::BadCEK.new("The supplied key is too short. Required length: #{key_length}") if cek.length < key_length
+        raiseJWE::BadCEK.new("The supplied key is too short. Required length: #{key_length}") if cek.length < key_length
 
         cipher.encrypt
         cipher.key = cek
@@ -25,7 +25,7 @@ module JWE
       end
 
       def decrypt(ciphertext, authenticated_data)
-        raise JWE::BadCEK.new("The supplied key is too short. Required length: #{key_length}") if cek.length < key_length
+        raiseJWE::BadCEK.new("The supplied key is too short. Required length: #{key_length}") if cek.length < key_length
 
         cipher.decrypt
         cipher.key = cek
@@ -35,7 +35,7 @@ module JWE
 
         cipher.update(ciphertext) + cipher.final
       rescue OpenSSL::Cipher::CipherError
-        raise JWE::InvalidData.new("Invalid ciphertext or authentication tag")
+        raise JWE::InvalidData.new('Invalid ciphertext or authentication tag')
       end
 
       def iv
@@ -53,7 +53,7 @@ module JWE
       end
 
       def tag
-        @tag || ""
+        @tag || ''
       end
 
       def self.included(base)

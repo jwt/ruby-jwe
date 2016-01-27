@@ -1,5 +1,5 @@
 describe JWE do
-  let(:plaintext) { "The true sign of intelligence is not knowledge but imagination." }
+  let(:plaintext) { 'The true sign of intelligence is not knowledge but imagination.' }
   let(:rsa_key) { OpenSSL::PKey::RSA.new File.read(File.dirname(__FILE__) + '/keys/rsa.pem') }
   let(:password) { SecureRandom.random_bytes(64) }
 
@@ -42,19 +42,19 @@ describe JWE do
 
   it 'raises when decoding a bad alg' do
     hdr = { alg: 'TEST', enc: 'A128GCM' }
-    payload = JWE::Base64.jwe_encode(hdr.to_json) + ".QY.QY.QY.QY"
+    payload = JWE::Base64.jwe_encode(hdr.to_json) + '.QY.QY.QY.QY'
     expect { JWE.decrypt(payload, rsa_key) }.to raise_error(ArgumentError)
   end
 
   it 'raises when decoding a bad enc' do
     hdr = { alg: 'A192CBC-HS384', enc: 'TEST' }
-    payload = JWE::Base64.jwe_encode(hdr.to_json) + ".QY.QY.QY.QY"
+    payload = JWE::Base64.jwe_encode(hdr.to_json) + '.QY.QY.QY.QY'
     expect { JWE.decrypt(payload, rsa_key) }.to raise_error(ArgumentError)
   end
 
   it 'raises when decoding a bad zip' do
     hdr = { alg: 'A192CBC-HS384', enc: 'A128GCM', zip: 'TEST' }
-    payload = JWE::Base64.jwe_encode(hdr.to_json) + ".QY.QY.QY.QY"
+    payload = JWE::Base64.jwe_encode(hdr.to_json) + '.QY.QY.QY.QY'
     expect { JWE.decrypt(payload, rsa_key) }.to raise_error(ArgumentError)
   end
 end

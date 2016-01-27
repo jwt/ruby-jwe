@@ -116,7 +116,7 @@ gcm.each do |group|
         context 'when the tag is not valid' do
           it 'raises an error' do
             enc = klass.new(key, group[:iv])
-            enc.tag = "random"
+            enc.tag = 'random'
             expect { enc.decrypt(group[:helloworld], '') }.to raise_error(JWE::InvalidData)
           end
         end
@@ -132,7 +132,7 @@ gcm.each do |group|
           it 'raises an error' do
             enc = klass.new(key, group[:iv])
             enc.tag = group[:tag]
-            expect { enc.decrypt("random", '') }.to raise_error(JWE::InvalidData)
+            expect { enc.decrypt('random', '') }.to raise_error(JWE::InvalidData)
           end
         end
       end
@@ -187,7 +187,7 @@ gcm.each do |group|
     describe '.available?' do
       context 'when the cipher is not available' do
         it 'is false' do
-          allow_any_instance_of(klass).to receive(:cipher) { raise JWE::NotImplementedError.new }
+          allow_any_instance_of(klass).to receive(:cipher) { raiseJWE::NotImplementedError.new }
           expect(klass.available?).to be_falsey
         end
       end
