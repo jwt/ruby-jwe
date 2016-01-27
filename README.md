@@ -9,7 +9,7 @@ A ruby implementation of the [RFC 7516 JSON Web Encryption (JWE)](https://tools.
 ## Installing
 
 ```bash
-sudo gem install jwe
+gem install jwe
 ```
 ## Usage
 
