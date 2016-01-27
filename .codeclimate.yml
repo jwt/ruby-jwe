@@ -4,6 +4,8 @@ engines:
     config:
       languages:
       - ruby
+  rubocop:
+    enabled: true
 
 ratings:
   paths:
