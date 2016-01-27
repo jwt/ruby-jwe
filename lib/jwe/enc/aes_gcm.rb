@@ -11,7 +11,7 @@ module JWE
       end
 
       def encrypt(cleartext, authenticated_data)
-        raiseJWE::BadCEK.new("The supplied key is too short. Required length: #{key_length}") if cek.length < key_length
+        raise JWE::BadCEK.new("The supplied key is too short. Required length: #{key_length}") if cek.length < key_length
 
         cipher.encrypt
         cipher.key = cek
@@ -25,7 +25,7 @@ module JWE
       end
 
       def decrypt(ciphertext, authenticated_data)
-        raiseJWE::BadCEK.new("The supplied key is too short. Required length: #{key_length}") if cek.length < key_length
+        raise JWE::BadCEK.new("The supplied key is too short. Required length: #{key_length}") if cek.length < key_length
 
         cipher.decrypt
         cipher.key = cek

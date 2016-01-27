@@ -20,9 +20,9 @@ module JWE
   VALID_ZIP = ['DEF'].freeze
 
   def self.encrypt(payload, key, alg: 'RSA-OAEP', enc: 'A128GCM', zip: nil)
-    raiseArgumentError.new("\"#{alg}\" is not a valid alg method") unless VALID_ALG.include?(alg)
-    raiseArgumentError.new("\"#{enc}\" is not a valid enc method") unless VALID_ENC.include?(enc)
-    raiseArgumentError.new("\"#{zip}\" is not a valid zip method") unless zip.nil? || zip == '' || VALID_ZIP.include?(zip)
+    raise ArgumentError.new("\"#{alg}\" is not a valid alg method") unless VALID_ALG.include?(alg)
+    raise ArgumentError.new("\"#{enc}\" is not a valid enc method") unless VALID_ENC.include?(enc)
+    raise ArgumentError.new("\"#{zip}\" is not a valid zip method") unless zip.nil? || zip == '' || VALID_ZIP.include?(zip)
 
     header = { alg: alg, enc: enc }
     header[:zip] = zip if zip && zip != ''
@@ -43,9 +43,9 @@ module JWE
     header = JSON.parse(header)
     base64header = payload.split('.').first
 
-    raiseArgumentError.new("\"#{header['alg']}\" is not a valid alg method") unless VALID_ALG.include?(header['alg'])
-    raiseArgumentError.new("\"#{header['enc']}\" is not a valid enc method") unless VALID_ENC.include?(header['enc'])
-    raiseArgumentError.new("\"#{header['zip']}\" is not a valid zip method") unless header['zip'].nil? || VALID_ZIP.include?(header['zip'])
+    raise ArgumentError.new("\"#{header['alg']}\" is not a valid alg method") unless VALID_ALG.include?(header['alg'])
+    raise ArgumentError.new("\"#{header['enc']}\" is not a valid enc method") unless VALID_ENC.include?(header['enc'])
+    raise ArgumentError.new("\"#{header['zip']}\" is not a valid zip method") unless header['zip'].nil? || VALID_ZIP.include?(header['zip'])
 
     cek = Alg.for(header['alg']).new(key).decrypt(enc_key)
     cipher = Enc.for(header['enc']).new(cek, iv)

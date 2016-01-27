@@ -187,7 +187,7 @@ gcm.each do |group|
     describe '.available?' do
       context 'when the cipher is not available' do
         it 'is false' do
-          allow_any_instance_of(klass).to receive(:cipher) { raiseJWE::NotImplementedError.new }
+          allow_any_instance_of(klass).to receive(:cipher) { raise JWE::NotImplementedError.new }
           expect(klass.available?).to be_falsey
         end
       end

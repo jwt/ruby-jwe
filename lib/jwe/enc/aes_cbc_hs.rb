@@ -11,7 +11,7 @@ module JWE
       end
 
       def encrypt(cleartext, authenticated_data)
-        raiseJWE::BadCEK.new("The supplied key is invalid. Required length: #{key_length}") if cek.length != key_length
+        raise JWE::BadCEK.new("The supplied key is invalid. Required length: #{key_length}") if cek.length != key_length
 
         cipher.encrypt
         cipher.key = enc_key
@@ -28,13 +28,13 @@ module JWE
       end
 
       def decrypt(ciphertext, authenticated_data)
-        raiseJWE::BadCEK.new("The supplied key is invalid. Required length: #{key_length}") if cek.length != key_length
+        raise JWE::BadCEK.new("The supplied key is invalid. Required length: #{key_length}") if cek.length != key_length
 
         length = [ciphertext.length * 8].pack('Q>') # 64bit big endian
         to_sign = authenticated_data + iv + ciphertext + length
         signature = OpenSSL::HMAC.digest(OpenSSL::Digest.new(hash_name), mac_key, to_sign)
         if signature[0...mac_key.length] != tag
-          raiseJWE::InvalidData.new('Authentication tag verification failed')
+          raise JWE::InvalidData.new('Authentication tag verification failed')
         end
 
         cipher.decrypt

@@ -7,7 +7,7 @@ module JWE
 
       def self.decode(payload)
         parts = payload.split('.')
-        raiseJWE::DecodeError.new('Not enaugh or too many segments') unless parts.length == 5
+        raise JWE::DecodeError.new('Not enaugh or too many segments') unless parts.length == 5
 
         parts.map do |part|
           JWE::Base64.jwe_decode(part)
