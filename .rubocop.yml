@@ -1,3 +1,5 @@
 Metrics/LineLength:
   Enabled: false
+Style/RaiseArgs:
+  EnforcedStyle: compact
 
