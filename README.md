@@ -1,6 +1,6 @@
 # JWE
 
-[![Build Status](https://travis-ci.org/aomega08/jwe.svg)](https://travis-ci.org/aomega08/jwe)
+[![Build Status](https://travis-ci.org/jwt/ruby-jwe.svg)](https://travis-ci.org/jwt/ruby-jwe)
 [![Code Climate](https://codeclimate.com/github/aomega08/jwe/badges/gpa.svg)](https://codeclimate.com/github/aomega08/jwe)
 [![Test Coverage](https://codeclimate.com/github/aomega08/jwe/badges/coverage.svg)](https://codeclimate.com/github/aomega08/jwe/coverage)
 
