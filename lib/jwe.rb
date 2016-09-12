@@ -10,10 +10,10 @@ require 'jwe/enc'
 require 'jwe/zip'
 
 module JWE
-  class DecodeError < Exception; end
-  class NotImplementedError < Exception; end
-  class BadCEK < Exception; end
-  class InvalidData < Exception; end
+  class DecodeError < RuntimeError; end
+  class NotImplementedError < RuntimeError; end
+  class BadCEK < RuntimeError; end
+  class InvalidData < RuntimeError; end
 
   VALID_ALG = ['RSA1_5', 'RSA-OAEP', 'RSA-OAEP-256', 'A128KW', 'A192KW', 'A256KW', 'dir', 'ECDH-ES', 'ECDH-ES+A128KW', 'ECDH-ES+A192KW', 'ECDH-ES+A256KW', 'A128GCMKW', 'A192GCMKW', 'A256GCMKW', 'PBES2-HS256+A128KW', 'PBES2-HS384+A192KW', 'PBES2-HS512+A256KW'].freeze
   VALID_ENC = ['A128CBC-HS256', 'A192CBC-HS384', 'A256CBC-HS512', 'A128GCM', 'A192GCM', 'A256GCM'].freeze
