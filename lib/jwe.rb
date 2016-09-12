@@ -23,6 +23,7 @@ module JWE
     raise ArgumentError.new("\"#{alg}\" is not a valid alg method") unless VALID_ALG.include?(alg)
     raise ArgumentError.new("\"#{enc}\" is not a valid enc method") unless VALID_ENC.include?(enc)
     raise ArgumentError.new("\"#{zip}\" is not a valid zip method") unless zip.nil? || zip == '' || VALID_ZIP.include?(zip)
+    raise ArgumentError.new('The key must not be nil or blank') if key.nil? || (key.is_a?(String) && key.strip == '')
 
     header = { alg: alg, enc: enc }
     header[:zip] = zip if zip && zip != ''
@@ -46,6 +47,7 @@ module JWE
     raise ArgumentError.new("\"#{header['alg']}\" is not a valid alg method") unless VALID_ALG.include?(header['alg'])
     raise ArgumentError.new("\"#{header['enc']}\" is not a valid enc method") unless VALID_ENC.include?(header['enc'])
     raise ArgumentError.new("\"#{header['zip']}\" is not a valid zip method") unless header['zip'].nil? || VALID_ZIP.include?(header['zip'])
+    raise ArgumentError.new('The key must not be nil or blank') if key.nil? || (key.is_a?(String) && key.strip == '')
 
     cek = Alg.for(header['alg']).new(key).decrypt(enc_key)
     cipher = Enc.for(header['enc']).new(cek, iv)

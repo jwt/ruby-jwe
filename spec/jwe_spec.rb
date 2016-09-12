@@ -57,4 +57,34 @@ describe JWE do
     payload = JWE::Base64.jwe_encode(hdr.to_json) + '.QY.QY.QY.QY'
     expect { JWE.decrypt(payload, rsa_key) }.to raise_error(ArgumentError)
   end
+
+  it 'raises when encrypting with a nil key' do
+    expect { JWE.encrypt(plaintext, nil) }.to raise_error(ArgumentError)
+  end
+
+  it 'raises when decrypting with a nil key' do
+    hdr = { alg: 'A192CBC-HS384', enc: 'A128GCM', zip: 'TEST' }
+    payload = JWE::Base64.jwe_encode(hdr.to_json) + '.QY.QY.QY.QY'
+    expect { JWE.decrypt(payload, nil) }.to raise_error(ArgumentError)
+  end
+
+  it 'raises when encrypting with a blank key' do
+    expect { JWE.encrypt(plaintext, "  \t \n ") }.to raise_error(ArgumentError)
+  end
+
+  it 'raises when decrypting with a blank key' do
+    hdr = { alg: 'A192CBC-HS384', enc: 'A128GCM', zip: 'TEST' }
+    payload = JWE::Base64.jwe_encode(hdr.to_json) + '.QY.QY.QY.QY'
+    expect { JWE.decrypt(payload, "  \t \n ") }.to raise_error(ArgumentError)
+  end
+
+  it 'raises when encrypting with a nil key with `dir` algorithm' do
+    expect { JWE.encrypt(plaintext, nil, alg: 'dir') }.to raise_error(ArgumentError)
+  end
+
+  it 'raises when decrypting with a nil key with `dir` algorithm' do
+    hdr = { alg: 'A192CBC-HS384', enc: 'A128GCM', zip: 'TEST' }
+    payload = JWE::Base64.jwe_encode(hdr.to_json) + '.QY.QY.QY.QY'
+    expect { JWE.decrypt(payload, nil, alg: 'dir') }.to raise_error(ArgumentError)
+  end
 end
