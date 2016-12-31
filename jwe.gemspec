@@ -14,6 +14,8 @@ Gem::Specification.new do |s|
 
   s.files = `git ls-files`.split("\n")
   s.require_paths = %w(lib)
+  
+  s.required_ruby_version = '>= 2.0.0'
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rake'
