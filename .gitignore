@@ -8,4 +8,5 @@ bundle
 /.ruby-gemset
 /.ruby-version
 Gemfile.lock
+/coverage
 
