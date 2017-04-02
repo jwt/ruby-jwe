@@ -21,8 +21,9 @@ describe JWE do
 
   describe 'when using dir alg method' do
     it 'roundtrips' do
-      encrypted = JWE.encrypt(plaintext, password, alg: 'dir')
-      result = JWE.decrypt(encrypted, password)
+      aes_password = SecureRandom.random_bytes(16)
+      encrypted = JWE.encrypt(plaintext, aes_password, alg: 'dir')
+      result = JWE.decrypt(encrypted, aes_password)
 
       expect(result).to eq plaintext
     end
