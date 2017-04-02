@@ -46,7 +46,7 @@ gcm = [
     class: JWE::Enc::A128cbcHs256,
     keylen: 32,
     helloworld: "\a\x02F\xA4m%\xDFH\xB4\xA4.\xBF:\xBF$\xE2".force_encoding('BINARY'),
-    tag: "\xD2\xC2\xA5M\xF1e\x00\xDB}\xDB\x15\x9F\xFF\x8A\x7F\x94".force_encoding('BINARY'),
+    tag: "\xDE$t\xBA\x8B\xEE\u001Df\x81\a\xC1\xBB\x98\xDFl\xF2".force_encoding('BINARY'),
     ivlen: 16,
     iv: "\x0" * 16
   },
@@ -54,7 +54,7 @@ gcm = [
     class: JWE::Enc::A192cbcHs384,
     keylen: 48,
     helloworld: "p\xFES\xF0\xB4\xCC]8\x1D\xDE\x8Dt\xE7tMh".force_encoding('BINARY'),
-    tag: "\xEA\xF4\xD73M\xC6\x1D\x13\x0E\x9E\xAE%L\xD3\x04#\x80:\xA8}\xD7\x16E{".force_encoding('BINARY'),
+    tag: "\xA8a\x04kRJ\x06`tp6\x8E\x9Ba\xE1e\xF6\xDA\"\x15\xEBk\xFDm".force_encoding('BINARY'),
     ivlen: 16,
     iv: "\x0" * 16
   },
@@ -62,7 +62,7 @@ gcm = [
     class: JWE::Enc::A256cbcHs512,
     keylen: 64,
     helloworld: "c\xFD\\\xB9Z\xB6\xE3\xB7\xEE\xA1\xD8\xDF\xB5\xB2\xF8\xEB".force_encoding('BINARY'),
-    tag: "\xD2W\xCAE\xBC\xE9\xC5\xCF\xD5\xE0\x88@j\xE4\xA1-\x16\xDA\x8F5(\x1D\x0E\x15.\xDC\x11\x12\x00`\xCER".force_encoding('BINARY'),
+    tag: "wC\xE3:\x91\x89W\x97\xBE\xB0\xBD\xEAo\xC66\x9F\xB82\xFDn\xA7.\u0014l\xFC2\xD7\xDFq\xB5[\xC6".force_encoding('BINARY'),
     ivlen: 16,
     iv: "\x0" * 16
   }

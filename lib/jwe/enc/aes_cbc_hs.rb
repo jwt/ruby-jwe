@@ -18,7 +18,7 @@ module JWE
         cipher.iv = iv
 
         ciphertext = cipher.update(cleartext) + cipher.final
-        length = [ciphertext.length * 8].pack('Q>') # 64bit big endian
+        length = [authenticated_data.length * 8].pack('Q>') # 64bit big endian
 
         to_sign = authenticated_data + iv + ciphertext + length
         signature = OpenSSL::HMAC.digest(OpenSSL::Digest.new(hash_name), mac_key, to_sign)
@@ -30,7 +30,7 @@ module JWE
       def decrypt(ciphertext, authenticated_data)
         raise JWE::BadCEK.new("The supplied key is invalid. Required length: #{key_length}") if cek.length != key_length
 
-        length = [ciphertext.length * 8].pack('Q>') # 64bit big endian
+        length = [authenticated_data.length * 8].pack('Q>') # 64bit big endian
         to_sign = authenticated_data + iv + ciphertext + length
         signature = OpenSSL::HMAC.digest(OpenSSL::Digest.new(hash_name), mac_key, to_sign)
         if signature[0...mac_key.length] != tag
