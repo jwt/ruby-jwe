@@ -1,3 +1,4 @@
+require 'jwe/alg/a128_kw'
 require 'jwe/alg/dir'
 require 'jwe/alg/rsa_oaep'
 require 'jwe/alg/rsa15'
