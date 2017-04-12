@@ -84,9 +84,9 @@ Key management:
 * RSA1_5
 * RSA-OAEP (default)
 * ~~RSA-OAEP-256~~
-* ~~A128KW~~
-* ~~A192KW~~
-* ~~A256KW~~
+* A128KW
+* A192KW
+* A256KW
 * dir
 * ~~ECDH-ES~~
 * ~~ECDH-ES+A128KW~~
