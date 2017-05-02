@@ -18,4 +18,10 @@ describe JWE::Zip::Def do
     deflated = deflate.compress('hello world')
     expect(deflate.decompress(deflated)).to eq 'hello world'
   end
+
+  it 'can deflate an RFC 1950 compressed message' do
+    deflated = Zlib::Deflate.deflate('hello world')
+    deflate = JWE::Zip::Def.new
+    expect(deflate.decompress(deflated)).to eq 'hello world'
+  end
 end

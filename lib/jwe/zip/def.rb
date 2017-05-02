@@ -4,11 +4,19 @@ module JWE
   module Zip
     class Def
       def compress(payload)
-        Zlib::Deflate.deflate(payload)
+        zlib = Zlib::Deflate.new(Zlib::DEFAULT_COMPRESSION, -Zlib::MAX_WBITS)
+        zlib.deflate(payload)
+        zlib.finish
       end
 
+      # Was using RFC 1950 instead of 1951.
       def decompress(payload)
         Zlib::Inflate.inflate(payload)
+
+      # Keeping compatibility for old encoded tokens
+      rescue Zlib::DataError
+        inflate = Zlib::Inflate.new(-Zlib::MAX_WBITS)
+        inflate.inflate(payload)
       end
     end
   end
