@@ -19,7 +19,7 @@ module JWE
   VALID_ENC = ['A128CBC-HS256', 'A192CBC-HS384', 'A256CBC-HS512', 'A128GCM', 'A192GCM', 'A256GCM'].freeze
   VALID_ZIP = ['DEF'].freeze
 
-  def self.encrypt(payload, key, alg: 'RSA-OAEP', enc: 'A128GCM', zip: nil)
+  def self.encrypt(payload, key, alg: 'RSA-OAEP', enc: 'A128GCM', zip: nil, headers: {})
     raise ArgumentError.new("\"#{alg}\" is not a valid alg method") unless VALID_ALG.include?(alg)
     raise ArgumentError.new("\"#{enc}\" is not a valid enc method") unless VALID_ENC.include?(enc)
     raise ArgumentError.new("\"#{zip}\" is not a valid zip method") unless zip.nil? || zip == '' || VALID_ZIP.include?(zip)
@@ -27,6 +27,7 @@ module JWE
 
     header = { alg: alg, enc: enc }
     header[:zip] = zip if zip && zip != ''
+    header.merge!(headers) if headers.is_a?(Hash)
 
     cipher = Enc.for(enc).new
     cipher.cek = key if alg == 'dir'
