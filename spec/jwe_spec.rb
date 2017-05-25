@@ -29,6 +29,18 @@ describe JWE do
     end
   end
 
+  describe 'when using extra headers' do
+    it 'roundtrips' do
+      encrypted = JWE.encrypt(plaintext, rsa_key, headers: {kid: 'some-kid-1'})
+      result = JWE.decrypt(encrypted, rsa_key)
+      header, _ = JWE::Serialization::Compact.decode(encrypted)
+      header = JSON.parse(header)
+ 
+      expect(header['kid']).to eq 'some-kid-1'
+      expect(result).to eq plaintext
+    end
+  end
+
   it 'raises when passed a bad alg' do
     expect { JWE.encrypt(plaintext, rsa_key, alg: 'TEST') }.to raise_error(ArgumentError)
   end
