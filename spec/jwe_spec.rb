@@ -29,6 +29,15 @@ describe JWE do
     end
   end
 
+  it 'allows dynamic key detection' do
+    encrypted = JWE.encrypt(plaintext, rsa_key)
+    result = JWE.decrypt(encrypted, nil) do |header|
+      rsa_key
+    end
+
+    expect(result).to eq plaintext
+  end
+
   it 'raises when passed a bad alg' do
     expect { JWE.encrypt(plaintext, rsa_key, alg: 'TEST') }.to raise_error(ArgumentError)
   end
