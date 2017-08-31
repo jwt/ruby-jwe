@@ -48,7 +48,7 @@ This example uses the 'dir' alg method. It requires an encryption key of the cor
 ```ruby
 require 'jwe'
 
-key = SecureRandom.random_bytes(32)
+key = SecureRandom.random_bytes(16)
 payload = "The quick brown fox jumps over the lazy dog."
 
 encrypted = JWE.encrypt(payload, key, alg: 'dir')
