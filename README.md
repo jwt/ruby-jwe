@@ -73,17 +73,17 @@ plaintext = JWE.decrypt(encrypted, key)
 puts plaintext #"The quick brown fox jumps over the lazy dog."
 ```
 
-This example sets an extra header.
+This example sets an extra **plaintext** custom header.
 
 ```ruby
 require 'jwe'
 
-keys = {
-  'id-1' => OpenSSL::PKey::RSA.generate(2048)
-}
+key = OpenSSL::PKey::RSA.generate(2048)
 payload = "The quick brown fox jumps over the lazy dog."
 
-encrypted = JWE.encrypt(payload, keys['id-1'], headers: {kid: 'id-1'})
+# In this case we add a copyright line to the headers (it can be anything you like
+# just remember it is plaintext).
+encrypted = JWE.encrypt(payload, key, headers: { copyright: 'This is my stuff! All rights reserved' })
 puts encrypted
 ```
 
