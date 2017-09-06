@@ -85,6 +85,7 @@ payload = "The quick brown fox jumps over the lazy dog."
 
 encrypted = JWE.encrypt(payload, keys['id-1'], headers: {kid: 'id-1'})
 puts encrypted
+```
 
 ## Available Algorithms
 
