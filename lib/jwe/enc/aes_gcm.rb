@@ -14,13 +14,9 @@ module JWE
       end
 
       def encrypt(cleartext, authenticated_data)
-        raise JWE::BadCEK.new("The supplied key is too short. Required length: #{key_length}") if cek.length < key_length
+        raise JWE::BadCEK, "The supplied key is too short. Required length: #{key_length}" if cek.length < key_length
 
-        cipher.encrypt
-        cipher.key = cek
-        cipher.iv = iv
-        cipher.auth_data = authenticated_data
-
+        setup_cipher(:encrypt, authenticated_data)
         ciphertext = cipher.update(cleartext) + cipher.final
         self.tag = cipher.auth_tag
 
@@ -28,17 +24,20 @@ module JWE
       end
 
       def decrypt(ciphertext, authenticated_data)
-        raise JWE::BadCEK.new("The supplied key is too short. Required length: #{key_length}") if cek.length < key_length
+        raise JWE::BadCEK, "The supplied key is too short. Required length: #{key_length}" if cek.length < key_length
 
-        cipher.decrypt
-        cipher.key = cek
-        cipher.iv = iv
-        cipher.auth_tag = tag
-        cipher.auth_data = authenticated_data
-
+        setup_cipher(:decrypt, authenticated_data)
         cipher.update(ciphertext) + cipher.final
       rescue OpenSSL::Cipher::CipherError
-        raise JWE::InvalidData.new('Invalid ciphertext or authentication tag')
+        raise JWE::InvalidData, 'Invalid ciphertext or authentication tag'
+      end
+
+      def setup_cipher(direction, auth_data)
+        cipher.send(direction)
+        cipher.key = cek
+        cipher.iv = iv
+        cipher.auth_tag = tag if direction == :decrypt
+        cipher.auth_data = auth_data
       end
 
       def iv
