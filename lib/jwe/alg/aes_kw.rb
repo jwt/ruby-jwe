@@ -14,39 +14,33 @@ module JWE
 
       def encrypt(cek)
         a = iv
-        r = cek.scan(/.{8}/m)
+        r = cek.force_encoding('ASCII-8BIT').scan(/.{8}/m)
 
         6.times do |j|
-          r.length.times do |i|
-            b = encrypt_round(a + r[i])
-
-            a = b.chars.first(8).join
-            r[i] = b.chars.last(8).join
-
-            t = (r.length * j) + i + 1
-            a = xor(a, t)
-          end
+          a, r = kw_encrypt_round(j, a, r)
         end
 
         ([a] + r).join
       end
 
-      def decrypt(encrypted_cek)
-        c = encrypted_cek.scan(/.{8}/m)
-        a = c[0]
+      def kw_encrypt_round(j, a, r)
+        r.length.times do |i|
+          b = encrypt_round(a + r[i]).chars
 
-        r = c[1..c.length]
+          a, r[i] = a_ri(b)
+
+          a = xor(a, (r.length * j) + i + 1)
+        end
+
+        [a, r]
+      end
+
+      def decrypt(encrypted_cek)
+        c = encrypted_cek.force_encoding('ASCII-8BIT').scan(/.{8}/m)
+        a, *r = c
 
         5.downto(0) do |j|
-          r.length.downto(1) do |i|
-            t = (r.length * j) + i
-            a = xor(a, t)
-
-            b = decrypt_round(a + r[i - 1])
-
-            a = b.chars.first(8).join
-            r[i - 1] = b.chars.last(8).join
-          end
+          a, r = kw_decrypt_round(j, a, r)
         end
 
         if a != iv
@@ -54,6 +48,22 @@ module JWE
         end
 
         r.join
+      end
+
+      def kw_decrypt_round(j, a, r)
+        r.length.downto(1) do |i|
+          a = xor(a, (r.length * j) + i)
+
+          b = decrypt_round(a + r[i - 1]).chars
+
+          a, r[i - 1] = a_ri(b)
+        end
+
+        [a, r]
+      end
+
+      def a_ri(b)
+        [b.first(8).join, b.last(8).join]
       end
 
       def cipher
