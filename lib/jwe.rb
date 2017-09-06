@@ -22,19 +22,18 @@ module JWE
 
   class << self
     def encrypt(payload, key, alg: 'RSA-OAEP', enc: 'A128GCM', **more_headers)
-      header = { alg: alg, enc: enc }.merge(more_headers)
-      header.delete(:zip) if header[:zip] == ''
+      header = generate_header(alg, enc, more_headers)
       check_params(header, key)
 
-      cipher = Enc.for(enc).new
+      payload = apply_zip(header, payload, :compress)
+
+      cipher = Enc.for(enc)
       cipher.cek = key if alg == 'dir'
 
-      payload = Zip.for(header[:zip]).new.compress(payload) if header[:zip]
+      json_hdr = header.to_json
+      ciphertext = cipher.encrypt(payload, Base64.jwe_encode(json_hdr))
 
-      ciphertext = cipher.encrypt(payload, Base64.jwe_encode(header.to_json))
-      encrypted_cek = Alg.for(alg).new(key).encrypt(cipher.cek)
-
-      Serialization::Compact.encode(header.to_json, encrypted_cek, cipher.iv, ciphertext, cipher.tag)
+      generate_serialization(json_hdr, Alg.encrypt_cek(alg, key, cipher.cek), ciphertext, cipher)
     end
 
     def decrypt(payload, key)
@@ -42,17 +41,12 @@ module JWE
       header = JSON.parse(header)
       check_params(header, key)
 
-      cek = Alg.for(header['alg']).new(key).decrypt(enc_key)
-      cipher = Enc.for(header['enc']).new(cek, iv)
-      cipher.tag = tag
+      cek = Alg.decrypt_cek(header['alg'], key, enc_key)
+      cipher = Enc.for(header['enc'], cek, iv, tag)
 
       plaintext = cipher.decrypt(ciphertext, payload.split('.').first)
 
-      if header['zip']
-        Zip.for(header['zip']).new.decompress(plaintext)
-      else
-        plaintext
-      end
+      apply_zip(header, plaintext, :decompress)
     end
 
     def check_params(header, key)
@@ -81,6 +75,25 @@ module JWE
     def param_to_class_name(param)
       klass = param.gsub(/[-\+]/, '_').downcase.sub(/^[a-z\d]*/) { $&.capitalize }
       klass.gsub(/_([a-z\d]*)/i) { Regexp.last_match(1).capitalize }
+    end
+
+    def apply_zip(header, data, direction)
+      zip = header[:zip] || header['zip']
+      if zip
+        Zip.for(zip).new.send(direction, data)
+      else
+        data
+      end
+    end
+
+    def generate_header(alg, enc, more)
+      header = { alg: alg, enc: enc }.merge(more)
+      header.delete(:zip) if header[:zip] == ''
+      header
+    end
+
+    def generate_serialization(hdr, cek, content, cipher)
+      Serialization::Compact.encode(hdr, cek, cipher.iv, content, cipher.tag)
     end
   end
 end

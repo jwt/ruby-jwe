@@ -13,5 +13,13 @@ module JWE
     rescue NameError
       raise NotImplementedError.new("Unsupported alg type: #{alg}")
     end
+
+    def self.encrypt_cek(alg, key, cek)
+      self.for(alg).new(key).encrypt(cek)
+    end
+
+    def self.decrypt_cek(alg, key, encrypted_cek)
+      self.for(alg).new(key).decrypt(encrypted_cek)
+    end
   end
 end
