@@ -83,7 +83,7 @@ payload = "The quick brown fox jumps over the lazy dog."
 
 # In this case we add a copyright line to the headers (it can be anything you like
 # just remember it is plaintext).
-encrypted = JWE.encrypt(payload, key, headers: { copyright: 'This is my stuff! All rights reserved' })
+encrypted = JWE.encrypt(payload, key, copyright: 'This is my stuff! All rights reserved')
 puts encrypted
 ```
 
@@ -145,4 +145,3 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
