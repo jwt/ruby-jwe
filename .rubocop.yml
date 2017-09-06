@@ -1,7 +1,7 @@
 Metrics/LineLength:
   Enabled: false
 Style/RaiseArgs:
-  EnforcedStyle: compact
+  Enabled: false
 Metrics/BlockLength:
   Enabled: false
 Style/PercentLiteralDelimiters:

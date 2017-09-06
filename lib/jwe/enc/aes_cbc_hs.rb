@@ -16,37 +16,41 @@ module JWE
       def encrypt(cleartext, authenticated_data)
         raise JWE::BadCEK.new("The supplied key is invalid. Required length: #{key_length}") if cek.length != key_length
 
-        cipher.encrypt
-        cipher.key = enc_key
-        cipher.iv = iv
+        ciphertext = cipher_round(:encrypt, iv, cleartext)
 
-        ciphertext = cipher.update(cleartext) + cipher.final
-        length = [authenticated_data.length * 8].pack('Q>') # 64bit big endian
-
-        to_sign = authenticated_data + iv + ciphertext + length
-        signature = OpenSSL::HMAC.digest(OpenSSL::Digest.new(hash_name), mac_key, to_sign)
-        self.tag = signature[0...mac_key.length]
+        signature = generate_tag(authenticated_data, iv, ciphertext)
+        self.tag = signature
 
         ciphertext
       end
 
       def decrypt(ciphertext, authenticated_data)
-        raise JWE::BadCEK.new("The supplied key is invalid. Required length: #{key_length}") if cek.length != key_length
+        raise JWE::BadCEK, "The supplied key is invalid. Required length: #{key_length}" if cek.length != key_length
 
-        length = [authenticated_data.length * 8].pack('Q>') # 64bit big endian
-        to_sign = authenticated_data + iv + ciphertext + length
-        signature = OpenSSL::HMAC.digest(OpenSSL::Digest.new(hash_name), mac_key, to_sign)
-        if signature[0...mac_key.length] != tag
-          raise JWE::InvalidData.new('Authentication tag verification failed')
+        signature = generate_tag(authenticated_data, iv, ciphertext)
+        if signature != tag
+          raise JWE::InvalidData, 'Authentication tag verification failed'
         end
 
-        cipher.decrypt
+        cipher_round(:decrypt, iv, ciphertext)
+      rescue OpenSSL::Cipher::CipherError
+        raise JWE::InvalidData, 'Invalid ciphertext or authentication tag'
+      end
+
+      def cipher_round(direction, iv, data)
+        cipher.send(direction)
         cipher.key = enc_key
         cipher.iv = iv
 
-        cipher.update(ciphertext) + cipher.final
-      rescue OpenSSL::Cipher::CipherError
-        raise JWE::InvalidData.new('Invalid ciphertext or authentication tag')
+        cipher.update(data) + cipher.final
+      end
+
+      def generate_tag(authenticated_data, iv, ciphertext)
+        length = [authenticated_data.length * 8].pack('Q>') # 64bit big endian
+        to_sign = authenticated_data + iv + ciphertext + length
+        signature = OpenSSL::HMAC.digest(OpenSSL::Digest.new(hash_name), mac_key, to_sign)
+
+        signature[0...mac_key.length]
       end
 
       def iv
