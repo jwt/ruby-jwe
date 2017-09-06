@@ -33,7 +33,7 @@ describe JWE do
     it 'roundtrips' do
       encrypted = JWE.encrypt(plaintext, rsa_key, kid: 'some-kid-1')
       result = JWE.decrypt(encrypted, rsa_key)
-      header, _ = JWE::Serialization::Compact.decode(encrypted)
+      header, = JWE::Serialization::Compact.decode(encrypted)
       header = JSON.parse(header)
 
       expect(header['kid']).to eq 'some-kid-1'

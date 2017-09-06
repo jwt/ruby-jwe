@@ -3,4 +3,5 @@ begin
   RSpec::Core::RakeTask.new(:spec)
   task default: :spec
 rescue LoadError
+  puts 'Where is RSpec?'
 end

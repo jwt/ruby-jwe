@@ -10,7 +10,6 @@ module JWE
   module Enc
     def self.for(enc)
       const_get(JWE.param_to_class_name(enc))
-
     rescue NameError
       raise NotImplementedError.new("Unsupported enc type: #{enc}")
     end

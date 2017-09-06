@@ -2,3 +2,8 @@ Metrics/LineLength:
   Enabled: false
 Style/RaiseArgs:
   EnforcedStyle: compact
+Metrics/BlockLength:
+  Enabled: false
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    "%w": "[]"
