@@ -73,6 +73,27 @@ plaintext = JWE.decrypt(encrypted, key)
 puts plaintext #"The quick brown fox jumps over the lazy dog."
 ```
 
+This example dynamically detects the key to use during decryption.
+
+```ruby
+require 'jwe'
+
+keys = {
+  'A128GCM' => OpenSSL::PKey::RSA.generate(2048),
+  'A192GCM' => OpenSSL::PKey::RSA.generate(2048)
+}
+payload = "The quick brown fox jumps over the lazy dog."
+
+encrypted = JWE.encrypt(payload, keys['A192GCM'], enc: 'A192GCM')
+puts encrypted
+
+plaintext = JWE.decrypt(encrypted, nil) do |headers|
+  enc = headers['enc']
+  keys[enc]
+end
+puts plaintext #"The quick brown fox jumps over the lazy dog."
+```
+
 ## Available Algorithms
 
 The RFC 7518 JSON Web Algorithms (JWA) spec defines the algorithms for [encryption](https://tools.ietf.org/html/rfc7518#section-5.1)
