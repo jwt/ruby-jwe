@@ -2,7 +2,7 @@ require 'jwe/enc/aes_cbc_hs'
 
 module JWE
   module Enc
-    # AES GCM 192 + SHA384 message verification algorithm.
+    # AES CBC 192 + SHA384 message verification algorithm.
     class A192cbcHs384
       include AesCbcHs
 
