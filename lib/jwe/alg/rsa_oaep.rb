@@ -1,5 +1,6 @@
 module JWE
   module Alg
+    # RSA-OAEP key encryption algorithm.
     class RsaOaep
       attr_accessor :key
 

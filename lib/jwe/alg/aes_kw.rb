@@ -2,6 +2,7 @@ require 'jwe/enc/cipher'
 
 module JWE
   module Alg
+    # Generic AES Key Wrapping algorithm for any key size.
     module AesKw
       attr_accessor :key
       attr_accessor :iv

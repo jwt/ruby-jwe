@@ -1,5 +1,7 @@
 module JWE
+  # Serialization namespace.
   module Serialization
+    # The default and suggested way of serializing JWE messages.
     class Compact
       def self.encode(header, encrypted_cek, iv, ciphertext, tag)
         [header, encrypted_cek, iv, ciphertext, tag].map { |piece| JWE::Base64.jwe_encode(piece) }.join '.'

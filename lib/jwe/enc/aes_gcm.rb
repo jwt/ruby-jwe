@@ -2,6 +2,7 @@ require 'jwe/enc/cipher'
 
 module JWE
   module Enc
+    # Abstract AES in Galois Counter mode for different key sizes.
     module AesGcm
       attr_accessor :cek
       attr_accessor :iv
@@ -60,6 +61,7 @@ module JWE
         base.extend(ClassMethods)
       end
 
+      # Provides availability checks for Key Encryption algorithms
       module ClassMethods
         def available?
           new.cipher

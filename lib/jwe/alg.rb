@@ -4,6 +4,7 @@ require 'jwe/alg/rsa_oaep'
 require 'jwe/alg/rsa15'
 
 module JWE
+  # Key encryption algorithms namespace
   module Alg
     def self.for(alg)
       const_get(JWE.param_to_class_name(alg))

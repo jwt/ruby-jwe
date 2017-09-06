@@ -1,5 +1,6 @@
 module JWE
   module Alg
+    # Direct (no-op) key encryption algorithm.
     class Dir
       attr_accessor :key
 

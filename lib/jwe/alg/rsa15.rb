@@ -1,5 +1,6 @@
 module JWE
   module Alg
+    # RSA RSA with PKCS1 v1.5 algorithm.
     class Rsa15
       attr_accessor :key
 

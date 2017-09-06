@@ -2,6 +2,7 @@ require 'jwe/enc/aes_gcm'
 
 module JWE
   module Enc
+    # AES GCM 128 algorithm.
     class A128gcm
       include AesGcm
 

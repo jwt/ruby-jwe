@@ -2,6 +2,7 @@ require 'jwe/enc/cipher'
 
 module JWE
   module Enc
+    # Abstract AES in Block cipher mode, with message signature for different key sizes.
     module AesCbcHs
       attr_accessor :cek
       attr_accessor :iv
@@ -76,6 +77,7 @@ module JWE
         base.extend(ClassMethods)
       end
 
+      # Provides availability checks for Key Encryption algorithms
       module ClassMethods
         def available?
           new.cipher

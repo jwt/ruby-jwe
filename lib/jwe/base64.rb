@@ -1,4 +1,5 @@
 module JWE
+  # Base64 for JWE is slightly different from what ruby provides.
   module Base64
     def self.jwe_encode(payload)
       ::Base64.urlsafe_encode64(payload).delete('=')

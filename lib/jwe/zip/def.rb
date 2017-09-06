@@ -2,6 +2,7 @@ require 'zlib'
 
 module JWE
   module Zip
+    # Deflate algorithm.
     class Def
       def compress(payload)
         zlib = Zlib::Deflate.new(Zlib::DEFAULT_COMPRESSION, -Zlib::MAX_WBITS)

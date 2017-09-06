@@ -9,6 +9,7 @@ require 'jwe/alg'
 require 'jwe/enc'
 require 'jwe/zip'
 
+# A ruby implementation of the RFC 7516 JSON Web Encryption (JWE) standard.
 module JWE
   class DecodeError < RuntimeError; end
   class NotImplementedError < RuntimeError; end

@@ -6,6 +6,7 @@ require 'jwe/enc/a192gcm'
 require 'jwe/enc/a256gcm'
 
 module JWE
+  # Content encryption algorithms namespace
   module Enc
     def self.for(enc)
       const_get(JWE.param_to_class_name(enc))

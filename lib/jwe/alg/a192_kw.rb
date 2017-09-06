@@ -2,6 +2,7 @@ require 'jwe/alg/aes_kw'
 
 module JWE
   module Alg
+    # AES-192 Key Wrapping algorithm
     class A192Kw
       include AesKw
 
