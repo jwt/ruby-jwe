@@ -6,9 +6,7 @@ require 'jwe/alg/rsa15'
 module JWE
   module Alg
     def self.for(alg)
-      klass = alg.gsub(/[-\+]/, '_').downcase.sub(/^[a-z\d]*/) { $&.capitalize }
-      klass.gsub!(/_([a-z\d]*)/i) { Regexp.last_match(1).capitalize }
-      const_get(klass)
+      const_get(JWE.param_to_class_name(alg))
 
     rescue NameError
       raise NotImplementedError.new("Unsupported alg type: #{alg}")

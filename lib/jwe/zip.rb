@@ -3,9 +3,7 @@ require 'jwe/zip/def'
 module JWE
   module Zip
     def self.for(zip)
-      klass = zip.gsub(/[-\+]/, '_').downcase.sub(/^[a-z\d]*/) { $&.capitalize }
-      klass.gsub!(/_([a-z\d]*)/i) { Regexp.last_match(1).capitalize }
-      const_get(klass)
+      const_get(JWE.param_to_class_name(zip))
 
     rescue NameError
       raise NotImplementedError.new("Unsupported zip type: #{zip}")

@@ -1,3 +1,5 @@
+require 'jwe/enc/cipher'
+
 module JWE
   module Enc
     module AesGcm
@@ -47,9 +49,7 @@ module JWE
       end
 
       def cipher
-        @cipher ||= OpenSSL::Cipher.new(cipher_name)
-      rescue RuntimeError
-        raise JWE::NotImplementedError.new("The version of OpenSSL linked to your Ruby does not support the cipher #{cipher_name}.")
+        @cipher ||= Cipher.for(cipher_name)
       end
 
       def tag

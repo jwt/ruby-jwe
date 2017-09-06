@@ -78,5 +78,10 @@ module JWE
     def check_key(key)
       raise ArgumentError.new('The key must not be nil or blank') if key.nil? || (key.is_a?(String) && key.strip == '')
     end
+
+    def param_to_class_name(param)
+      klass = param.gsub(/[-\+]/, '_').downcase.sub(/^[a-z\d]*/) { $&.capitalize }
+      klass.gsub(/_([a-z\d]*)/i) { Regexp.last_match(1).capitalize }
+    end
   end
 end

@@ -8,9 +8,7 @@ require 'jwe/enc/a256gcm'
 module JWE
   module Enc
     def self.for(enc)
-      klass = enc.gsub(/[-\+]/, '_').downcase.sub(/^[a-z\d]*/) { $&.capitalize }
-      klass.gsub!(/_([a-z\d]*)/i) { Regexp.last_match(1).capitalize }
-      const_get(klass)
+      const_get(JWE.param_to_class_name(enc))
 
     rescue NameError
       raise NotImplementedError.new("Unsupported enc type: #{enc}")

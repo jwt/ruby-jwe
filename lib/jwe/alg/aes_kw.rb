@@ -1,3 +1,5 @@
+require 'jwe/enc/cipher'
+
 module JWE
   module Alg
     module AesKw
@@ -54,9 +56,7 @@ module JWE
       end
 
       def cipher
-        @cipher ||= OpenSSL::Cipher.new(cipher_name)
-      rescue RuntimeError
-        raise JWE::NotImplementedError.new("The version of OpenSSL linked to your Ruby does not support the cipher #{cipher_name}.")
+        @cipher ||= Enc::Cipher.for(cipher_name)
       end
 
       def encrypt_round(data)
