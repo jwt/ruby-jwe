@@ -6,6 +6,9 @@ rvm:
   - 2.2.7
   - 2.3.4
   - 2.4.1
-addons:
-  code_climate:
-    repo_token: b5653aee7f7a47c0d70a89feb535648aa06575497b1eab9e16068c49bf4462c3
+
+after_script:
+  - bundle exec codeclimate-test-reporter
+
+env:
+  CODECLIMATE_REPO_TOKEN: d9854e6b60cf9cbd78bb8036da0a5c63d6178a14a19a8043752dc5fecec99831
