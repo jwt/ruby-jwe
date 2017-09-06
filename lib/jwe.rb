@@ -22,10 +22,9 @@ module JWE
 
   class << self
     def encrypt(payload, key, alg: 'RSA-OAEP', enc: 'A128GCM', **more_headers)
-      check_params(alg, enc, more_headers[:zip], key)
-
       header = { alg: alg, enc: enc }.merge(more_headers)
       header.delete(:zip) if header[:zip] == ''
+      check_params(header, key)
 
       cipher = Enc.for(enc).new
       cipher.cek = key if alg == 'dir'
@@ -41,8 +40,7 @@ module JWE
     def decrypt(payload, key)
       header, enc_key, iv, ciphertext, tag = Serialization::Compact.decode(payload)
       header = JSON.parse(header)
-
-      check_params(header['alg'], header['enc'], header['zip'], key)
+      check_params(header, key)
 
       cek = Alg.for(header['alg']).new(key).decrypt(enc_key)
       cipher = Enc.for(header['enc']).new(cek, iv)
@@ -57,10 +55,10 @@ module JWE
       end
     end
 
-    def check_params(alg, enc, zip, key)
-      check_alg(alg)
-      check_enc(enc)
-      check_zip(zip)
+    def check_params(header, key)
+      check_alg(header[:alg] || header['alg'])
+      check_enc(header[:enc] || header['enc'])
+      check_zip(header[:zip] || header['zip'])
       check_key(key)
     end
 
