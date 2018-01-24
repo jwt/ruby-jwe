@@ -100,4 +100,11 @@ describe JWE do
     payload = JWE::Base64.jwe_encode(hdr.to_json) + '.QY.QY.QY.QY'
     expect { JWE.decrypt(payload, nil, alg: 'dir') }.to raise_error(ArgumentError)
   end
+
+  it 'roundtrips with default parameters' do
+    key = OpenSSL::PKey::RSA.new(2048)
+    token = JWE.encrypt('hello world', key)
+
+    expect(JWE.decrypt(token, key)).to eq 'hello world'
+  end
 end

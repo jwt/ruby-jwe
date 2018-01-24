@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/jwt/ruby-jwe.svg)](https://travis-ci.org/jwt/ruby-jwe)
 [![Code Climate](https://codeclimate.com/github/jwt/ruby-jwe/badges/gpa.svg)](https://codeclimate.com/github/jwt/ruby-jwe)
-[![Test Coverage](https://codeclimate.com/github/jwt/ruby-jwe/badges/coverage.svg)](https://codeclimate.com/github/aomega08/jwe/coverage)
+[![Test Coverage](https://codeclimate.com/github/jwt/ruby-jwe/badges/coverage.svg)](https://codeclimate.com/github/aomega08/jwa/coverage)
 
 A ruby implementation of the [RFC 7516 JSON Web Encryption (JWE)](https://tools.ietf.org/html/rfc7516) standard.
 

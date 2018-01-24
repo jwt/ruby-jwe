@@ -2,11 +2,10 @@ require 'base64'
 require 'json'
 require 'openssl'
 require 'securerandom'
+require 'jwa'
 
 require 'jwe/base64'
 require 'jwe/serialization/compact'
-require 'jwe/alg'
-require 'jwe/enc'
 require 'jwe/zip'
 
 # A ruby implementation of the RFC 7516 JSON Web Encryption (JWE) standard.
@@ -27,13 +26,19 @@ module JWE
 
       payload = apply_zip(header, payload, :compress)
 
-      cipher = Enc.for(enc)
-      cipher.cek = key if alg == 'dir'
+      content_cipher = JWA::Algorithms::ContentEncryption.for(enc)
+      key_length = content_cipher.key_length
+      cek = alg == 'dir' ? key : SecureRandom.random_bytes(key_length)
+      cipher = content_cipher.new(cek)
 
       json_hdr = header.to_json
-      ciphertext = cipher.encrypt(payload, Base64.jwe_encode(json_hdr))
 
-      generate_serialization(json_hdr, Alg.encrypt_cek(alg, key, cipher.cek), ciphertext, cipher)
+      key_cipher = JWA::Algorithms::KeyManagement.for(alg).new(key)
+
+      encrypted_cek = key_cipher.encrypt(cek)
+      ciphertext, tag = cipher.encrypt(payload, Base64.jwe_encode(json_hdr))
+
+      Serialization::Compact.encode(json_hdr, encrypted_cek, cipher.iv, ciphertext, tag)
     end
 
     def decrypt(payload, key)
@@ -41,10 +46,11 @@ module JWE
       header = JSON.parse(header)
       check_params(header, key)
 
-      cek = Alg.decrypt_cek(header['alg'], key, enc_key)
-      cipher = Enc.for(header['enc'], cek, iv, tag)
+      key_cipher = JWA::Algorithms::KeyManagement.for(header['alg']).new(key)
+      cek = key_cipher.decrypt(enc_key)
 
-      plaintext = cipher.decrypt(ciphertext, payload.split('.').first)
+      content_cipher = JWA::Algorithms::ContentEncryption.for(header['enc']).new(cek, iv)
+      plaintext = content_cipher.decrypt(ciphertext, payload.split('.').first, tag)
 
       apply_zip(header, plaintext, :decompress)
     end
@@ -72,11 +78,6 @@ module JWE
       raise ArgumentError.new('The key must not be nil or blank') if key.nil? || (key.is_a?(String) && key.strip == '')
     end
 
-    def param_to_class_name(param)
-      klass = param.gsub(/[-\+]/, '_').downcase.sub(/^[a-z\d]*/) { $&.capitalize }
-      klass.gsub(/_([a-z\d]*)/i) { Regexp.last_match(1).capitalize }
-    end
-
     def apply_zip(header, data, direction)
       zip = header[:zip] || header['zip']
       if zip
@@ -90,10 +91,6 @@ module JWE
       header = { alg: alg, enc: enc }.merge(more)
       header.delete(:zip) if header[:zip] == ''
       header
-    end
-
-    def generate_serialization(hdr, cek, content, cipher)
-      Serialization::Compact.encode(hdr, cek, cipher.iv, content, cipher.tag)
     end
   end
 end
