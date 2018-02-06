@@ -6,8 +6,7 @@ module JWE
     class Def
       def compress(payload)
         zlib = Zlib::Deflate.new(Zlib::DEFAULT_COMPRESSION, -Zlib::MAX_WBITS)
-        zlib.deflate(payload)
-        zlib.finish
+        zlib.deflate(payload, Zlib::FINISH)
       end
 
       # Was using RFC 1950 instead of 1951.
