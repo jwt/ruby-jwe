@@ -69,9 +69,9 @@ describe JWE::Alg::Rsa15 do
 end
 
 [
-  JWE::Alg::A128Kw,
-  JWE::Alg::A192Kw,
-  JWE::Alg::A256Kw
+  JWE::Alg::A128kw,
+  JWE::Alg::A192kw,
+  JWE::Alg::A256kw
 ].each_with_index do |klass, i|
   describe klass do
     let(:kek) { SecureRandom.random_bytes(16 + i * 8) }
