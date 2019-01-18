@@ -95,6 +95,11 @@ describe JWE do
     expect { JWE.encrypt(plaintext, nil, alg: 'dir') }.to raise_error(ArgumentError)
   end
 
+  it 'raises when encrypting with random_bytes other than 16', if: RUBY_VERSION >= '2.4.0' do
+    aes_password = SecureRandom.random_bytes(32)
+    expect { JWE.encrypt(plaintext, aes_password, alg: 'dir') }.to raise_error(ArgumentError)
+  end
+
   it 'raises when decrypting with a nil key with `dir` algorithm' do
     hdr = { alg: 'A192CBC-HS384', enc: 'A128GCM', zip: 'TEST' }
     payload = JWE::Base64.jwe_encode(hdr.to_json) + '.QY.QY.QY.QY'
