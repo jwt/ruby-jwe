@@ -1,9 +1,4 @@
-require 'jwe/enc/a128cbc_hs256'
-require 'jwe/enc/a192cbc_hs384'
-require 'jwe/enc/a256cbc_hs512'
-require 'jwe/enc/a128gcm'
-require 'jwe/enc/a192gcm'
-require 'jwe/enc/a256gcm'
+require 'spec_helper'
 
 describe JWE::Enc do
   describe '.for' do

@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe JWE do
   let(:plaintext) { 'The true sign of intelligence is not knowledge but imagination.' }
   let(:rsa_key) { OpenSSL::PKey::RSA.new File.read(File.dirname(__FILE__) + '/keys/rsa.pem') }
