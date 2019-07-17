@@ -46,7 +46,7 @@ module JWE
 
       plaintext = cipher.decrypt(ciphertext, payload.split('.').first)
 
-      apply_zip(header, plaintext, :decompress)
+      [apply_zip(header, plaintext, :decompress), header]
     end
 
     def check_params(header, key)
