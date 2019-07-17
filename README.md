@@ -24,7 +24,7 @@ payload = "The quick brown fox jumps over the lazy dog."
 encrypted = JWE.encrypt(payload, key)
 puts encrypted
 
-plaintext = JWE.decrypt(encrypted, key)
+plaintext, header = JWE.decrypt(encrypted, key)
 puts plaintext #"The quick brown fox jumps over the lazy dog."
 ```
 
@@ -39,7 +39,7 @@ payload = "The quick brown fox jumps over the lazy dog."
 encrypted = JWE.encrypt(payload, key, enc: 'A192GCM')
 puts encrypted
 
-plaintext = JWE.decrypt(encrypted, key)
+plaintext, header = JWE.decrypt(encrypted, key)
 puts plaintext #"The quick brown fox jumps over the lazy dog."
 ```
 
@@ -54,7 +54,7 @@ payload = "The quick brown fox jumps over the lazy dog."
 encrypted = JWE.encrypt(payload, key, alg: 'dir')
 puts encrypted
 
-plaintext = JWE.decrypt(encrypted, key)
+plaintext, header = JWE.decrypt(encrypted, key)
 puts plaintext #"The quick brown fox jumps over the lazy dog."
 ```
 
@@ -69,7 +69,7 @@ payload = "The quick brown fox jumps over the lazy dog."
 encrypted = JWE.encrypt(payload, key, zip: 'DEF')
 puts encrypted
 
-plaintext = JWE.decrypt(encrypted, key)
+plaintext, header = JWE.decrypt(encrypted, key)
 puts plaintext #"The quick brown fox jumps over the lazy dog."
 ```
 
@@ -83,8 +83,11 @@ payload = "The quick brown fox jumps over the lazy dog."
 
 # In this case we add a copyright line to the headers (it can be anything you like
 # just remember it is plaintext).
-encrypted = JWE.encrypt(payload, key, copyright: 'This is my stuff! All rights reserved')
+encrypted = JWE.encrypt(payload, key, copyright: "This is my stuff! All rights reserved")
 puts encrypted
+
+plaintext, header = JWE.decrypt(encrypted, key)
+puts header[:copyright] #"This is my stuff! All rights reserved"
 ```
 
 ## Available Algorithms
