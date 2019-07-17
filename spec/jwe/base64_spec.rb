@@ -1,4 +1,4 @@
-require 'jwe/base64'
+require 'spec_helper'
 
 module JWE
   describe Base64 do

@@ -1,4 +1,4 @@
-require 'jwe/zip/def'
+require 'spec_helper'
 
 describe JWE::Zip do
   describe '.for' do

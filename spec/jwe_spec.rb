@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe JWE do
   let(:plaintext) { 'The true sign of intelligence is not knowledge but imagination.' }
   let(:rsa_key) { OpenSSL::PKey::RSA.new File.read(File.dirname(__FILE__) + '/keys/rsa.pem') }
@@ -5,7 +7,7 @@ describe JWE do
 
   it 'roundtrips' do
     encrypted = JWE.encrypt(plaintext, rsa_key)
-    result = JWE.decrypt(encrypted, rsa_key)
+    result, header = JWE.decrypt(encrypted, rsa_key)
 
     expect(result).to eq plaintext
   end
@@ -13,7 +15,7 @@ describe JWE do
   describe 'when using DEF compression' do
     it 'roundtrips' do
       encrypted = JWE.encrypt(plaintext, rsa_key, zip: 'DEF')
-      result = JWE.decrypt(encrypted, rsa_key)
+      result, header = JWE.decrypt(encrypted, rsa_key)
 
       expect(result).to eq plaintext
     end
@@ -23,7 +25,7 @@ describe JWE do
     it 'roundtrips' do
       aes_password = SecureRandom.random_bytes(16)
       encrypted = JWE.encrypt(plaintext, aes_password, alg: 'dir')
-      result = JWE.decrypt(encrypted, aes_password)
+      result, header = JWE.decrypt(encrypted, aes_password)
 
       expect(result).to eq plaintext
     end
@@ -32,9 +34,7 @@ describe JWE do
   describe 'when using extra headers' do
     it 'roundtrips' do
       encrypted = JWE.encrypt(plaintext, rsa_key, kid: 'some-kid-1')
-      result = JWE.decrypt(encrypted, rsa_key)
-      header, = JWE::Serialization::Compact.decode(encrypted)
-      header = JSON.parse(header)
+      result, header = JWE.decrypt(encrypted, rsa_key)
 
       expect(header['kid']).to eq 'some-kid-1'
       expect(result).to eq plaintext

@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe JWE::Serialization::Compact do
   describe '#encode' do
     it 'returns components base64ed and joined with a dot' do
