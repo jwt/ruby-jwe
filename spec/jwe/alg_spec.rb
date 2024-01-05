@@ -53,6 +53,21 @@ describe JWE::Alg::RsaOaep do
   end
 end
 
+describe JWE::Alg::RsaOaep256 do
+  let(:alg) { JWE::Alg::RsaOaep256.new(key) }
+
+  describe '#encrypt' do
+    it 'returns an encrypted string' do
+      expect(alg.encrypt('random key')).to_not eq 'random key'
+    end
+  end
+
+  it 'decrypts the encrypted key to the original key' do
+    ciphertext = alg.encrypt('random key')
+    expect(alg.decrypt(ciphertext)).to eq 'random key'
+  end
+end
+
 describe JWE::Alg::Rsa15 do
   let(:alg) { JWE::Alg::Rsa15.new(key) }
 
