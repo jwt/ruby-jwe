@@ -17,4 +17,6 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.5.0'
   s.metadata['rubygems_mfa_required'] = 'true'
+
+  s.add_dependency 'base64'
 end
