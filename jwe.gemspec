@@ -15,10 +15,6 @@ Gem::Specification.new do |s|
   s.files = `git ls-files`.split("\n")
   s.require_paths = %w[lib]
 
-  s.required_ruby_version = '>= 2.0.0'
-
-  s.add_development_dependency 'rspec'
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'simplecov'
-  s.add_development_dependency 'codeclimate-test-reporter'
+  s.required_ruby_version = '>= 2.5.0'
+  s.metadata['rubygems_mfa_required'] = 'true'
 end
