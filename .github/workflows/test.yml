@@ -49,9 +49,3 @@ jobs:
 
       - name: Run tests
         run: bundle exec rspec
-
-      - uses: paambaati/codeclimate-action@v3.2.0
-        env:
-          CC_TEST_REPORTER_ID: d9854e6b60cf9cbd78bb8036da0a5c63d6178a14a19a8043752dc5fecec99831
-        with:
-          coverageLocations: "coverage-*/coverage.json:simplecov"
