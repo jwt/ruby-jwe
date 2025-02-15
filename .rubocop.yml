@@ -1,4 +1,6 @@
-Metrics/LineLength:
+inherit_from: .rubocop_todo.yml
+
+Layout/LineLength:
   Enabled: false
 Style/RaiseArgs:
   Enabled: false
