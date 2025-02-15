@@ -1,9 +1,19 @@
-Metrics/LineLength:
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  TargetRubyVersion: 2.5
+  NewCops: enable
+  SuggestExtensions: false
+
+Layout/LineLength:
   Enabled: false
+
 Style/RaiseArgs:
   Enabled: false
+
 Metrics/BlockLength:
   Enabled: false
+
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     "%w": "[]"
