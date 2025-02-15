@@ -1,6 +1,6 @@
 # JWE
 
-[![Build Status](https://github.com/jwt/ruby-jwe/workflows/test/badge.svg?branch=main)](https://github.com/jwt/ruby-jwe/actions)
+[![Build Status](https://github.com/jwt/ruby-jwe/workflows/test/badge.svg?branch=master)](https://github.com/jwt/ruby-jwe/actions)
 A ruby implementation of the [RFC 7516 JSON Web Encryption (JWE)](https://tools.ietf.org/html/rfc7516) standard.
 
 ## Installing
