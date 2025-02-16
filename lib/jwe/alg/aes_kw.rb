@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'jwe/enc/cipher'
 
 module JWE
@@ -8,13 +10,13 @@ module JWE
       attr_accessor :iv
 
       def initialize(key = nil, iv = "\xA6\xA6\xA6\xA6\xA6\xA6\xA6\xA6")
-        self.iv = iv.force_encoding('ASCII-8BIT')
-        self.key = key.force_encoding('ASCII-8BIT')
+        self.iv = iv.b
+        self.key = key.b
       end
 
       def encrypt(cek)
         a = iv
-        r = cek.force_encoding('ASCII-8BIT').scan(/.{8}/m)
+        r = cek.b.scan(/.{8}/m)
 
         6.times do |j|
           a, r = kw_encrypt_round(j, a, r)
@@ -36,7 +38,7 @@ module JWE
       end
 
       def decrypt(encrypted_cek)
-        c = encrypted_cek.force_encoding('ASCII-8BIT').scan(/.{8}/m)
+        c = encrypted_cek.b.scan(/.{8}/m)
         a, *r = c
 
         5.downto(0) do |j|
