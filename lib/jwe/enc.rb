@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'jwe/enc/a128cbc_hs256'
 require 'jwe/enc/a192cbc_hs384'
 require 'jwe/enc/a256cbc_hs512'

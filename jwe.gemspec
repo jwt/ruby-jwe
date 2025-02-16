@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 lib = File.expand_path('../lib/', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'jwe/version'
@@ -9,14 +11,19 @@ Gem::Specification.new do |s|
   s.description = 'A Ruby implementation of the RFC 7516 JSON Web Encryption (JWE) standard'
   s.authors     = ['Francesco Boffa']
   s.email       = 'fra.boffa@gmail.com'
-  s.homepage    = 'http://github.com/aomega08/jwe'
+  s.homepage    = 'https://github.com/jwt/ruby-jwe'
   s.license     = 'MIT'
 
   s.files = `git ls-files`.split("\n")
   s.require_paths = %w[lib]
 
   s.required_ruby_version = '>= 2.5.0'
-  s.metadata['rubygems_mfa_required'] = 'true'
+
+  s.metadata = {
+    'bug_tracker_uri' => 'https://github.com/jwt/ruby-jwe/issues',
+    'changelog_uri' => "https://github.com/jwt/ruby-jwe/blob/v#{JWE::VERSION}/CHANGELOG.md",
+    'rubygems_mfa_required' => 'true'
+  }
 
   s.add_dependency 'base64'
 end

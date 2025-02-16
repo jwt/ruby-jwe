@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module JWE
   # Serialization namespace.
   module Serialization

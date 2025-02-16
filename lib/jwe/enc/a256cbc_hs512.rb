@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'jwe/enc/aes_cbc_hs'
 
 module JWE

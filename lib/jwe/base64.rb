@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module JWE
   # Base64 for JWE is slightly different from what ruby provides.
   module Base64

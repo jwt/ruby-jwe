@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'jwe/alg/dir'
 require 'jwe/alg/rsa_oaep'
 require 'jwe/alg/rsa15'
@@ -35,7 +37,7 @@ describe JWE::Alg::Dir do
   end
 end
 
-key_path = File.dirname(__FILE__) + '/../keys/rsa.pem'
+key_path = "#{File.dirname(__FILE__)}/../keys/rsa.pem"
 key = OpenSSL::PKey::RSA.new File.read(key_path)
 
 describe JWE::Alg::RsaOaep do
@@ -74,7 +76,7 @@ end
   JWE::Alg::A256kw
 ].each_with_index do |klass, i|
   describe klass do
-    let(:kek) { SecureRandom.random_bytes(16 + i * 8) }
+    let(:kek) { SecureRandom.random_bytes(16 + (i * 8)) }
     let(:cek) { SecureRandom.random_bytes(32) }
     let(:alg) { klass.new(kek) }
 
