@@ -1,6 +1,6 @@
 # JWE
 
-[![Build Status](https://github.com/jwt/ruby-jwe/workflows/test/badge.svg?branch=master)](https://github.com/jwt/ruby-jwe/actions)
+[![Build Status](https://github.com/jwt/ruby-jwe/actions/workflows/test.yml/badge.svg)](https://github.com/jwt/ruby-jwe/actions/workflows/test.yml)
 [![Gem Version](https://badge.fury.io/rb/jwe.svg)](https://badge.fury.io/rb/jwe)
 
 A ruby implementation of the [RFC 7516 JSON Web Encryption (JWE)](https://tools.ietf.org/html/rfc7516) standard.
