@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'jwe/alg/a128_kw'
 require 'jwe/alg/a192_kw'
 require 'jwe/alg/a256_kw'

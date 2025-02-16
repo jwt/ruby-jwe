@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module JWE
   module Alg
     # Direct (no-op) key encryption algorithm.

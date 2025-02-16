@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'jwe/enc/a128cbc_hs256'
 require 'jwe/enc/a192cbc_hs384'
 require 'jwe/enc/a256cbc_hs512'
@@ -21,48 +23,48 @@ gcm = [
   {
     class: JWE::Enc::A128gcm,
     keylen: 16,
-    helloworld: "\"\xC6\xE4h\x8AI\x83\x90v\xAF\xE2\x11".force_encoding('BINARY'),
-    tag: "\x85|\xF7\xE1\x94\tVG\x84\xE1\xA8\x81\a\xF4\xC60".force_encoding('BINARY'),
+    helloworld: "\"\xC6\xE4h\x8AI\x83\x90v\xAF\xE2\x11".b,
+    tag: "\x85|\xF7\xE1\x94\tVG\x84\xE1\xA8\x81\a\xF4\xC60".b,
     ivlen: 12,
     iv: "\x0" * 12
   },
   {
     class: JWE::Enc::A192gcm,
     keylen: 24,
-    helloworld: "\x9F\xA4\xEC\xCCa\x86\tRO\xD7\xE3\x8D".force_encoding('BINARY'),
-    tag: "\xF6\xC0\xB8\x91A\xB1\xF0}\xD4u\xD0_\xCD\xA7\x17'".force_encoding('BINARY'),
+    helloworld: "\x9F\xA4\xEC\xCCa\x86\tRO\xD7\xE3\x8D".b,
+    tag: "\xF6\xC0\xB8\x91A\xB1\xF0}\xD4u\xD0_\xCD\xA7\x17'".b,
     ivlen: 12,
     iv: "\x0" * 12
   },
   {
     class: JWE::Enc::A256gcm,
     keylen: 32,
-    helloworld: "\xFDq\xDC\xDD\x87\x9DK\x97\x03G\x99\f".force_encoding('BINARY'),
-    tag: "\xC6\xF1\r\xDD\x14\x7Fqf,6\x0EK\x7F\x9D\x1D\t".force_encoding('BINARY'),
+    helloworld: "\xFDq\xDC\xDD\x87\x9DK\x97\x03G\x99\f".b,
+    tag: "\xC6\xF1\r\xDD\x14\x7Fqf,6\x0EK\x7F\x9D\x1D\t".b,
     ivlen: 12,
     iv: "\x0" * 12
   },
   {
     class: JWE::Enc::A128cbcHs256,
     keylen: 32,
-    helloworld: "\a\x02F\xA4m%\xDFH\xB4\xA4.\xBF:\xBF$\xE2".force_encoding('BINARY'),
-    tag: "\xDE$t\xBA\x8B\xEE\u001Df\x81\a\xC1\xBB\x98\xDFl\xF2".force_encoding('BINARY'),
+    helloworld: "\a\x02F\xA4m%\xDFH\xB4\xA4.\xBF:\xBF$\xE2".b,
+    tag: "\xDE$t\xBA\x8B\xEE\u001Df\x81\a\xC1\xBB\x98\xDFl\xF2".b,
     ivlen: 16,
     iv: "\x0" * 16
   },
   {
     class: JWE::Enc::A192cbcHs384,
     keylen: 48,
-    helloworld: "p\xFES\xF0\xB4\xCC]8\x1D\xDE\x8Dt\xE7tMh".force_encoding('BINARY'),
-    tag: "\xA8a\x04kRJ\x06`tp6\x8E\x9Ba\xE1e\xF6\xDA\"\x15\xEBk\xFDm".force_encoding('BINARY'),
+    helloworld: "p\xFES\xF0\xB4\xCC]8\x1D\xDE\x8Dt\xE7tMh".b,
+    tag: "\xA8a\x04kRJ\x06`tp6\x8E\x9Ba\xE1e\xF6\xDA\"\x15\xEBk\xFDm".b,
     ivlen: 16,
     iv: "\x0" * 16
   },
   {
     class: JWE::Enc::A256cbcHs512,
     keylen: 64,
-    helloworld: "c\xFD\\\xB9Z\xB6\xE3\xB7\xEE\xA1\xD8\xDF\xB5\xB2\xF8\xEB".force_encoding('BINARY'),
-    tag: "wC\xE3:\x91\x89W\x97\xBE\xB0\xBD\xEAo\xC66\x9F\xB82\xFDn\xA7.\u0014l\xFC2\xD7\xDFq\xB5[\xC6".force_encoding('BINARY'),
+    helloworld: "c\xFD\\\xB9Z\xB6\xE3\xB7\xEE\xA1\xD8\xDF\xB5\xB2\xF8\xEB".b,
+    tag: "wC\xE3:\x91\x89W\x97\xBE\xB0\xBD\xEAo\xC66\x9F\xB82\xFDn\xA7.\u0014l\xFC2\xD7\xDFq\xB5[\xC6".b,
     ivlen: 16,
     iv: "\x0" * 16
   }
@@ -85,7 +87,7 @@ gcm.each do |group|
       context 'with a valid key' do
         it 'returns the encrypted payload' do
           enc = klass.new(key, group[:iv])
-          expect(enc.encrypt(plaintext, '').force_encoding('BINARY')).to eq group[:helloworld]
+          expect(enc.encrypt(plaintext, '').b).to eq group[:helloworld]
         end
 
         it 'sets an authentication tag' do

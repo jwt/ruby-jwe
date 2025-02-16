@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'jwe/enc/aes_gcm'
 
 module JWE

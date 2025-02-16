@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'jwe/alg/aes_kw'
 
 module JWE

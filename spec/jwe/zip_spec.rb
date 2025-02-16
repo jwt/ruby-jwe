@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'jwe/zip/def'
 
 describe JWE::Zip do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module JWE
   module Alg
     # RSA RSA with PKCS1 v1.5 algorithm.

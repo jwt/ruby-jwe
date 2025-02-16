@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module JWE
   module Alg
     # RSA-OAEP key encryption algorithm.

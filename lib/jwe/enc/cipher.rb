@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module JWE
   module Enc
     # Helper to get OpenSSL cipher instance from a string.
