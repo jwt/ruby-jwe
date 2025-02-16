@@ -6,9 +6,9 @@
 
 **Features:**
 
-- Support Ruby 3.4 (#26)
-- Drop support for Ruby versions prior to 2.5 (#27)
+- Support Ruby 3.4 (https://github.com/jwt/ruby-jwe/pull/26)
+- Drop support for Ruby versions prior to 2.5 (https://github.com/jwt/ruby-jwe/pull/27)
 
 **Fixes and enhancements:**
 
-- Refreshed codebase (CI and linter fixes) (#27, #28)
+- Refreshed codebase (CI and linter fixes) (https://github.com/jwt/ruby-jwe/pull/27, https://github.com/jwt/ruby-jwe/pull/28)
