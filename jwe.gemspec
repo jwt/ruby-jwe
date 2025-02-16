@@ -19,10 +19,11 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.5.0'
 
-  spec.metadata = {
+  s.metadata = {
     'bug_tracker_uri' => 'https://github.com/jwt/ruby-jwe/issues',
     'changelog_uri' => "https://github.com/jwt/ruby-jwe/blob/v#{JWE::VERSION}/CHANGELOG.md",
     'rubygems_mfa_required' => 'true'
   }
+
   s.add_dependency 'base64'
 end
