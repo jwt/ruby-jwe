@@ -2,7 +2,7 @@
 
 ## [v1.0.0](https://github.com/jwt/ruby-jwe/tree/v1.0.0) (NEXT)
 
-[Full Changelog](https://github.com/jwt/ruby-jwe/compare/v0.4.0...master)
+[Full Changelog](https://github.com/jwt/ruby-jwe/compare/v0.4.0...v1.0.0)
 
 **Features:**
 
