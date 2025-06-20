@@ -96,7 +96,7 @@ Only a subset of these algorithms is implemented in this gem. Striked elements a
 Key management:
 * RSA1_5
 * RSA-OAEP (default)
-* ~~RSA-OAEP-256~~
+* RSA-OAEP-256 (if OpenSSL::VERSION >= '3.0')
 * A128KW
 * A192KW
 * A256KW

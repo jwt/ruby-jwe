@@ -5,6 +5,7 @@ require 'jwe/alg/a192_kw'
 require 'jwe/alg/a256_kw'
 require 'jwe/alg/dir'
 require 'jwe/alg/rsa_oaep'
+require 'jwe/alg/rsa_oaep_256' if OpenSSL::VERSION >= '3.0'
 require 'jwe/alg/rsa15'
 
 module JWE
