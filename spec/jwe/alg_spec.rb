@@ -55,6 +55,29 @@ describe JWE::Alg::RsaOaep do
   end
 end
 
+if OpenSSL::VERSION >= '3.0'
+  describe JWE::Alg::RsaOaep256 do
+    let(:alg) { JWE::Alg::RsaOaep256.new(key) }
+
+    describe '#encrypt' do
+      it 'returns an encrypted string' do
+        expect(alg.encrypt('random key')).to_not eq 'random key'
+      end
+    end
+
+    it 'decrypts the encrypted key to the original key' do
+      ciphertext = alg.encrypt('random key')
+      expect(alg.decrypt(ciphertext)).to eq 'random key'
+    end
+  end
+else
+  describe JWE::Alg do
+    it 'raises an error for rsa-oaep-256 if openssl < 3.0' do
+      expect { JWE::Alg.for('rsa-oaep-256') }.to raise_error(JWE::NotImplementedError)
+    end
+  end
+end
+
 describe JWE::Alg::Rsa15 do
   let(:alg) { JWE::Alg::Rsa15.new(key) }
 
