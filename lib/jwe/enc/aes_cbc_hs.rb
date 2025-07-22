@@ -64,11 +64,11 @@ module JWE
       end
 
       def mac_key
-        cek[0...key_length / 2]
+        cek[0...(key_length / 2)]
       end
 
       def enc_key
-        cek[key_length / 2..-1]
+        cek[(key_length / 2)..-1]
       end
 
       def cipher
