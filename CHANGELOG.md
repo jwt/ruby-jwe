@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.1.0](https://github.com/jwt/ruby-jwe/tree/v1.1.0) (2025-07-22)
+
+[Full Changelog](https://github.com/jwt/ruby-jwe/compare/v1.0.0...v1.1.0)
+
+**Features:**
+
+- Add RsaOaep256 algorithm (https://github.com/jwt/ruby-jwe/pull/31)
+
 ## [v1.0.0](https://github.com/jwt/ruby-jwe/tree/v1.0.0) (2025-02-16)
 
 [Full Changelog](https://github.com/jwt/ruby-jwe/compare/v0.4.0...v1.0.0)
