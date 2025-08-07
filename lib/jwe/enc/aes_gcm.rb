@@ -38,7 +38,11 @@ module JWE
         cipher.send(direction)
         cipher.key = cek
         cipher.iv = iv
-        cipher.auth_tag = tag if direction == :decrypt
+        if direction == :decrypt
+          raise JWE::InvalidData, 'Invalid ciphertext or authentication tag' unless tag.bytesize == 16
+
+          cipher.auth_tag = tag
+        end
         cipher.auth_data = auth_data
       end
 

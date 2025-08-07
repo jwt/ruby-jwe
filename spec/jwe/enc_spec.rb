@@ -130,6 +130,14 @@ gcm.each do |group|
           end
         end
 
+        context 'when the tag is not 16 bytes' do
+          it 'raises an error' do
+            enc = klass.new(key, group[:iv])
+            enc.tag = group[:tag][0...-1]
+            expect { enc.decrypt(group[:helloworld], '') }.to raise_error(JWE::InvalidData)
+          end
+        end
+
         context 'when the ciphertext is not valid' do
           it 'raises an error' do
             enc = klass.new(key, group[:iv])
