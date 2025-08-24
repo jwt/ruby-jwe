@@ -12,7 +12,7 @@ gem install jwe
 ```
 ## Usage
 
-This example uses the default alg and enc methods (RSA-OAEP and A128CBC-HS256). It requires an RSA key.
+This example uses the default alg and enc methods (RSA-OAEP and A128GCM). It requires an RSA key.
 
 ```ruby
 require 'jwe'
@@ -113,10 +113,10 @@ Key management:
 * ~~PBES2-HS512+A256KW~~
 
 Encryption:
-* A128CBC-HS256 (default)
+* A128CBC-HS256
 * A192CBC-HS384
 * A256CBC-HS512
-* A128GCM
+* A128GCM (default)
 * A192GCM
 * A256GCM
 
