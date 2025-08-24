@@ -6,7 +6,7 @@ module JWE
   module Enc
     # Abstract AES in Block cipher mode, with message signature for different key sizes.
     module AesCbcHs
-      attr_accessor :cek, :iv, :tag
+      attr_writer :cek, :iv, :tag
 
       def initialize(cek = nil, iv = nil)
         self.iv = iv

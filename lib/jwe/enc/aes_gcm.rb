@@ -6,7 +6,7 @@ module JWE
   module Enc
     # Abstract AES in Galois Counter mode for different key sizes.
     module AesGcm
-      attr_accessor :cek, :iv, :tag
+      attr_writer :iv, :cek, :tag
 
       def initialize(cek = nil, iv = nil)
         self.iv = iv
