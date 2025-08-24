@@ -75,7 +75,7 @@ module JWE
     end
 
     def param_to_class_name(param)
-      klass = param.gsub(/[-\+]/, '_').downcase.sub(/^[a-z\d]*/) { $&.capitalize }
+      klass = param.gsub(/[-+]/, '_').downcase.sub(/^[a-z\d]*/) { $&.capitalize }
       klass.gsub(/_([a-z\d]*)/i) { Regexp.last_match(1).capitalize }
     end
 
