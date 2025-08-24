@@ -6,9 +6,7 @@ module JWE
   module Enc
     # Abstract AES in Block cipher mode, with message signature for different key sizes.
     module AesCbcHs
-      attr_accessor :cek
-      attr_accessor :iv
-      attr_accessor :tag
+      attr_accessor :cek, :iv, :tag
 
       def initialize(cek = nil, iv = nil)
         self.iv = iv
@@ -30,9 +28,7 @@ module JWE
         raise JWE::BadCEK, "The supplied key is invalid. Required length: #{key_length}" if cek.length != key_length
 
         signature = generate_tag(authenticated_data, iv, ciphertext)
-        if signature != tag
-          raise JWE::InvalidData, 'Authentication tag verification failed'
-        end
+        raise JWE::InvalidData, 'Authentication tag verification failed' if signature != tag
 
         cipher_round(:decrypt, iv, ciphertext)
       rescue OpenSSL::Cipher::CipherError

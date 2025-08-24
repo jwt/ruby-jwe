@@ -6,8 +6,7 @@ module JWE
   module Alg
     # Generic AES Key Wrapping algorithm for any key size.
     module AesKw
-      attr_accessor :key
-      attr_accessor :iv
+      attr_accessor :key, :iv
 
       def initialize(key = nil, iv = "\xA6\xA6\xA6\xA6\xA6\xA6\xA6\xA6")
         self.iv = iv.b
@@ -45,9 +44,7 @@ module JWE
           a, r = kw_decrypt_round(j, a, r)
         end
 
-        if a != iv
-          raise StandardError.new('The encrypted key has been tampered. Do not use this key.')
-        end
+        raise StandardError.new('The encrypted key has been tampered. Do not use this key.') if a != iv
 
         r.join
       end
