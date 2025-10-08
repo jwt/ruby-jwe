@@ -86,6 +86,21 @@ encrypted = JWE.encrypt(payload, key, copyright: 'This is my stuff! All rights r
 puts encrypted
 ```
 
+This example uses AES-GCM key wrap algorithm (A128GCMKW, A192GCMKW, or A256GCMKW).
+
+```ruby
+require 'jwe'
+
+key = SecureRandom.random_bytes(16) # 16 bytes for A128GCMKW, 24 for A192GCMKW, 32 for A256GCMKW
+payload = "The quick brown fox jumps over the lazy dog."
+
+encrypted = JWE.encrypt(payload, key, alg: 'A128GCMKW')
+puts encrypted
+
+plaintext = JWE.decrypt(encrypted, key)
+puts plaintext #"The quick brown fox jumps over the lazy dog."
+```
+
 ## Available Algorithms
 
 The RFC 7518 JSON Web Algorithms (JWA) spec defines the algorithms for [encryption](https://tools.ietf.org/html/rfc7518#section-5.1)
@@ -105,9 +120,9 @@ Key management:
 * ~~ECDH-ES+A128KW~~
 * ~~ECDH-ES+A192KW~~
 * ~~ECDH-ES+A256KW~~
-* ~~A128GCMKW~~
-* ~~A192GCMKW~~
-* ~~A256GCMKW~~
+* A128GCMKW
+* A192GCMKW
+* A256GCMKW
 * ~~PBES2-HS256+A128KW~~
 * ~~PBES2-HS384+A192KW~~
 * ~~PBES2-HS512+A256KW~~

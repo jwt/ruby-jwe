@@ -6,6 +6,9 @@ require 'jwe/alg/rsa15'
 require 'jwe/alg/a128_kw'
 require 'jwe/alg/a192_kw'
 require 'jwe/alg/a256_kw'
+require 'jwe/alg/a128gcmkw'
+require 'jwe/alg/a192gcmkw'
+require 'jwe/alg/a256gcmkw'
 require 'openssl'
 
 describe JWE::Alg do
@@ -120,6 +123,55 @@ end
 
       bad_alg = klass.new(kek, "\xA7\xA7\xA7\xA7\xA7\xA7\xA7\xA7")
       expect { bad_alg.decrypt(ciphertext) }.to raise_error(StandardError)
+    end
+  end
+end
+
+[
+  JWE::Alg::A128gcmkw,
+  JWE::Alg::A192gcmkw,
+  JWE::Alg::A256gcmkw
+].each_with_index do |klass, i|
+  describe klass do
+    let(:kek) { SecureRandom.random_bytes(16 + (i * 8)) }
+    let(:cek) { SecureRandom.random_bytes(32) }
+    let(:alg) { klass.new(kek) }
+
+    describe '#encrypt' do
+      it 'returns an encrypted string' do
+        encrypted = alg.encrypt(cek)
+        expect(encrypted).to_not eq cek
+        expect(encrypted).to be_a(String)
+      end
+    end
+
+    it 'decrypts the encrypted key to the original key' do
+      ciphertext = alg.encrypt(cek)
+      expect(alg.decrypt(ciphertext)).to eq cek
+    end
+
+    it 'generates IV and authentication tag' do
+      alg.encrypt(cek)
+      expect(alg.send(:iv)).to_not be_nil
+      expect(alg.send(:iv).length).to eq 12
+      expect(alg.send(:tag)).to_not be_nil
+      expect(alg.send(:tag).length).to eq 16
+    end
+
+    it 'raises when trying to decrypt with wrong IV' do
+      alg1 = klass.new(kek)
+      ciphertext = alg1.encrypt(cek)
+
+      alg2 = klass.new(kek)
+      expect { alg2.decrypt(ciphertext) }.to raise_error(StandardError)
+    end
+
+    it 'raises when trying to decrypt tampered ciphertext' do
+      ciphertext = alg.encrypt(cek)
+      tampered = ciphertext.dup
+      tampered[0] = (tampered[0].ord ^ 1).chr
+
+      expect { alg.decrypt(tampered) }.to raise_error(StandardError)
     end
   end
 end

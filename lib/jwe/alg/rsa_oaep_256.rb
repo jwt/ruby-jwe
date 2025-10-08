@@ -3,7 +3,7 @@
 module JWE
   module Alg
     # RSA-OAEP-256 key encryption algorithm.
-    class RsaOaep256
+    class RsaOaep256 < Base
       attr_accessor :key
 
       def initialize(key)
