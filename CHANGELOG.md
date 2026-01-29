@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/jwt/ruby-jwe/tree/HEAD)
+
+**Features:**
+
+- Add JSON Serialization support (General and Flattened) per RFC 7516 Section 7.2
+
 ## [v1.1.1](https://github.com/jwt/ruby-jwe/tree/v1.1.1) (2025-08-07)
 
 [Full Changelog](https://github.com/jwt/ruby-jwe/compare/v1.1.0...v1.1.1)
