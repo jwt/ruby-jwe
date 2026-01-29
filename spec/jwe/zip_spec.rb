@@ -15,7 +15,7 @@ describe JWE::Zip do
 end
 
 describe JWE::Zip::Def do
-  context 'with the orginal payload' do
+  context 'with the original payload' do
     it 'deflates and inflates to original payload' do
       deflate = JWE::Zip::Def.new
       deflated = deflate.compress('hello world')
