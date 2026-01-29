@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/jwt/ruby-jwe/tree/HEAD)
+
+**Features:**
+
+- Add `crit` (Critical) header parameter validation per RFC 7516 §4.1.13
+
 ## [v1.1.1](https://github.com/jwt/ruby-jwe/tree/v1.1.1) (2025-08-07)
 
 [Full Changelog](https://github.com/jwt/ruby-jwe/compare/v1.1.0...v1.1.1)
