@@ -9,4 +9,6 @@ bundle
 /.ruby-version
 Gemfile.lock
 /coverage
-
+.DS_Store
+.idea/
+.vscode/
