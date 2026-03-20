@@ -7,7 +7,7 @@ module JWE
       class << self
         def for(cipher_name)
           OpenSSL::Cipher.new(cipher_name)
-        rescue RuntimeError
+        rescue RuntimeError, OpenSSL::Cipher::CipherError
           raise JWE::NotImplementedError.new("The version of OpenSSL linked to your Ruby does not support the cipher #{cipher_name}.")
         end
       end
