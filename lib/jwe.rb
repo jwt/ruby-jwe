@@ -22,7 +22,13 @@ module JWE
   VALID_ENC = %w[A128CBC-HS256 A192CBC-HS384 A256CBC-HS512 A128GCM A192GCM A256GCM].freeze
   VALID_ZIP = ['DEF'].freeze
 
+  REGISTERED_HEADERS = %w[
+    alg enc zip jku jwk kid x5u x5c x5t x5t#S256 typ cty crit
+  ].freeze
+
   class << self
+    attr_accessor :supported_critical_headers
+
     def encrypt(payload, key, alg: 'RSA-OAEP', enc: 'A128GCM', **more_headers)
       header = generate_header(alg, enc, more_headers)
       check_params(header, key)
@@ -55,6 +61,7 @@ module JWE
       check_alg(header[:alg] || header['alg'])
       check_enc(header[:enc] || header['enc'])
       check_zip(header[:zip] || header['zip'])
+      check_crit(header)
       check_key(key)
     end
 
@@ -72,6 +79,21 @@ module JWE
 
     def check_key(key)
       raise ArgumentError.new('The key must not be nil or blank') if key.nil? || (key.is_a?(String) && key.strip == '')
+    end
+
+    def check_crit(header)
+      crit = header[:crit] || header['crit']
+      return if crit.nil?
+
+      raise ArgumentError, '"crit" header must be a non-empty array' unless crit.is_a?(Array) && !crit.empty?
+
+      crit.each { |param| validate_critical_param(header, param) }
+    end
+
+    def validate_critical_param(header, param)
+      raise ArgumentError, "\"#{param}\" is a registered header and cannot be in \"crit\"" if REGISTERED_HEADERS.include?(param)
+      raise ArgumentError, "\"#{param}\" is in \"crit\" but not present in header" unless header.key?(param) || header.key?(param.to_sym)
+      raise JWE::InvalidData, "Unsupported critical header: \"#{param}\"" unless supported_critical_headers.include?(param)
     end
 
     def param_to_class_name(param)
@@ -98,4 +120,6 @@ module JWE
       Serialization::Compact.encode(hdr, cek, cipher.iv, content, cipher.tag)
     end
   end
+
+  self.supported_critical_headers = []
 end
