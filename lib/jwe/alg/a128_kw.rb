@@ -5,7 +5,7 @@ require 'jwe/alg/aes_kw'
 module JWE
   module Alg
     # AES-128 Key Wrapping algorithm
-    class A128kw
+    class A128kw < Base
       include AesKw
 
       def cipher_name

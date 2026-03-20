@@ -3,7 +3,7 @@
 module JWE
   module Alg
     # RSA RSA with PKCS1 v1.5 algorithm.
-    class Rsa15
+    class Rsa15 < Base
       attr_accessor :key
 
       def initialize(key)

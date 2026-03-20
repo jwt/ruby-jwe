@@ -1,5 +1,24 @@
 # Changelog
 
+## Add support for AES-GCM key wrap algorithms(https://github.com/jwt/ruby-jwe/pull/38) (2025-10-08)
+
+**Features:**
+- Add support for AES-GCM key wrap algorithms (A128GCMKW, A192GCMKW, A256GCMKW)
+- Add new internal architecture with `Base`, `Validator`, `Header`, and `NameResolver` classes
+- Improve code organization with refactored module structure
+- RuboCop compliance improvements
+
+**Deprecations:**
+
+- Deprecated `JWE.check_params`, `JWE.check_alg`, `JWE.check_enc`, `JWE.check_zip`, `JWE.check_key`
+(use `JWE::Validator` instead)
+- Deprecated `JWE.param_to_class_name` (use `JWE::NameResolver` instead)
+- Deprecated internal methods `JWE.apply_zip`, `JWE.generate_header`, `JWE.generate_serialization`
+
+**Notes:**
+
+All deprecated methods remain functional with deprecation warnings for backward compatibility.
+
 ## [v1.1.1](https://github.com/jwt/ruby-jwe/tree/v1.1.1) (2025-08-07)
 
 [Full Changelog](https://github.com/jwt/ruby-jwe/compare/v1.1.0...v1.1.1)

@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require 'jwe/alg/base'
 require 'jwe/alg/a128_kw'
 require 'jwe/alg/a192_kw'
 require 'jwe/alg/a256_kw'
+require 'jwe/alg/a128gcmkw'
+require 'jwe/alg/a192gcmkw'
+require 'jwe/alg/a256gcmkw'
 require 'jwe/alg/dir'
 require 'jwe/alg/rsa_oaep'
 require 'jwe/alg/rsa_oaep_256' if OpenSSL::VERSION >= '3.0'
@@ -11,8 +15,10 @@ require 'jwe/alg/rsa15'
 module JWE
   # Key encryption algorithms namespace
   module Alg
+    extend JWE::NameResolver
+
     def self.for(alg)
-      const_get(JWE.param_to_class_name(alg))
+      const_get(param_to_class_name(alg))
     rescue NameError
       raise NotImplementedError.new("Unsupported alg type: #{alg}")
     end

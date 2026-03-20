@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
+require 'jwe/enc/base'
 require 'jwe/enc/aes_cbc_hs'
 
 module JWE
   module Enc
     # AES CBC 128 + SHA256 message verification algorithm.
-    class A128cbcHs256
+    class A128cbcHs256 < Base
       include AesCbcHs
 
       def key_length

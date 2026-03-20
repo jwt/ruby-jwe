@@ -3,7 +3,7 @@
 module JWE
   module Alg
     # Direct (no-op) key encryption algorithm.
-    class Dir
+    class Dir < Base
       attr_accessor :key
 
       def initialize(key)
@@ -16,6 +16,10 @@ module JWE
 
       def decrypt(_encrypted_cek)
         key
+      end
+
+      def class_name_to_param
+        'dir'
       end
     end
   end
