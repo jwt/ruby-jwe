@@ -43,6 +43,67 @@ describe JWE do
     end
   end
 
+  describe 'when using A128GCMKW algorithm' do
+    it 'roundtrips' do
+      aes_key = SecureRandom.random_bytes(16)
+      encrypted = JWE.encrypt(plaintext, aes_key, alg: 'A128GCMKW')
+      result = JWE.decrypt(encrypted, aes_key)
+
+      expect(result).to eq plaintext
+    end
+
+    it 'includes iv and tag in header' do
+      aes_key = SecureRandom.random_bytes(16)
+      encrypted = JWE.encrypt(plaintext, aes_key, alg: 'A128GCMKW')
+      header, = JWE::Serialization::Compact.decode(encrypted)
+      header = JSON.parse(header)
+
+      expect(header['alg']).to eq 'A128GCMKW'
+      expect(header).to have_key('iv')
+      expect(header).to have_key('tag')
+    end
+  end
+
+  describe 'when using A192GCMKW algorithm' do
+    it 'roundtrips' do
+      aes_key = SecureRandom.random_bytes(24)
+      encrypted = JWE.encrypt(plaintext, aes_key, alg: 'A192GCMKW', enc: 'A192GCM')
+      result = JWE.decrypt(encrypted, aes_key)
+
+      expect(result).to eq plaintext
+    end
+  end
+
+  describe 'when using A256GCMKW algorithm with A256GCM encryption' do
+    it 'roundtrips' do
+      aes_key = SecureRandom.random_bytes(32)
+      encrypted = JWE.encrypt(plaintext, aes_key, alg: 'A256GCMKW', enc: 'A256GCM')
+      result = JWE.decrypt(encrypted, aes_key)
+
+      expect(result).to eq plaintext
+    end
+
+    it 'includes iv and tag in header' do
+      aes_key = SecureRandom.random_bytes(32)
+      encrypted = JWE.encrypt(plaintext, aes_key, alg: 'A256GCMKW', enc: 'A256GCM')
+      header, = JWE::Serialization::Compact.decode(encrypted)
+      header = JSON.parse(header)
+
+      expect(header['alg']).to eq 'A256GCMKW'
+      expect(header['enc']).to eq 'A256GCM'
+      expect(header).to have_key('iv')
+      expect(header).to have_key('tag')
+    end
+
+    it 'works with compression' do
+      aes_key = SecureRandom.random_bytes(32)
+      encrypted = JWE.encrypt(plaintext, aes_key, alg: 'A256GCMKW', enc: 'A256GCM', zip: 'DEF')
+      result = JWE.decrypt(encrypted, aes_key)
+
+      expect(result).to eq plaintext
+    end
+  end
+
   it 'raises when passed a bad alg' do
     expect { JWE.encrypt(plaintext, rsa_key, alg: 'TEST') }.to raise_error(ArgumentError)
   end

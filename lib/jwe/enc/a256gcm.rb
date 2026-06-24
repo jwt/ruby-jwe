@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
+require 'jwe/enc/base'
 require 'jwe/enc/aes_gcm'
 
 module JWE
   module Enc
     # AES GCM 256 algorithm.
-    class A256gcm
+    class A256gcm < Base
       include AesGcm
 
       def key_length

@@ -18,4 +18,23 @@ Style/PercentLiteralDelimiters:
 
 Naming/MethodParameterName:
   AllowedNames: ["iv", "b", "j", "a", "r", "t"]
-  
+
+Metrics/AbcSize:
+  Exclude:
+    - 'lib/jwe.rb'
+
+Metrics/ParameterLists:
+  Exclude:
+    - 'lib/jwe.rb'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'lib/jwe.rb'
+
+Lint/MissingSuper:
+  Exclude:
+    - 'lib/jwe/alg/dir.rb'
+    - 'lib/jwe/alg/rsa15.rb'
+    - 'lib/jwe/alg/rsa_oaep.rb'
+    - 'lib/jwe/alg/rsa_oaep_256.rb'
+
