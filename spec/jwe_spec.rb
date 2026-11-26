@@ -21,6 +21,40 @@ describe JWE do
     end
   end
 
+  describe 'when using RSA1_5 alg method' do
+    let(:parts) { JWE.encrypt(plaintext, rsa_key, alg: 'RSA1_5', enc: enc).split('.') }
+
+    %w[A128GCM A256CBC-HS512].each do |enc_name|
+      context "with #{enc_name}" do
+        let(:enc) { enc_name }
+
+        it 'roundtrips' do
+          expect(JWE.decrypt(parts.join('.'), rsa_key)).to eq plaintext
+        end
+
+        it 'raises JWE::InvalidData for a malformed encrypted key' do
+          parts[1] = JWE::Base64.jwe_encode("\x00".b * (rsa_key.n.num_bits / 8))
+
+          expect { JWE.decrypt(parts.join('.'), rsa_key) }.to raise_error(JWE::InvalidData)
+        end
+
+        it 'raises JWE::InvalidData for an encrypted key of the wrong length' do
+          parts[1] = JWE::Base64.jwe_encode(rsa_key.public_encrypt('short'))
+
+          expect { JWE.decrypt(parts.join('.'), rsa_key) }.to raise_error(JWE::InvalidData)
+        end
+
+        it 'raises JWE::InvalidData for a modified tag' do
+          tag = JWE::Base64.jwe_decode(parts[4]).bytes
+          tag[-1] ^= 1
+          parts[4] = JWE::Base64.jwe_encode(tag.pack('C*'))
+
+          expect { JWE.decrypt(parts.join('.'), rsa_key) }.to raise_error(JWE::InvalidData)
+        end
+      end
+    end
+  end
+
   describe 'when using dir alg method' do
     it 'roundtrips' do
       aes_password = SecureRandom.random_bytes(16)

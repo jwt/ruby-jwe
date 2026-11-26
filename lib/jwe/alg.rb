@@ -21,8 +21,10 @@ module JWE
       self.for(alg).new(key).encrypt(cek)
     end
 
-    def self.decrypt_cek(alg, key, encrypted_cek)
-      self.for(alg).new(key).decrypt(encrypted_cek)
+    def self.decrypt_cek(alg, key, encrypted_cek, cek_length: nil)
+      algorithm = self.for(alg).new(key)
+      algorithm.cek_length = cek_length if cek_length && algorithm.respond_to?(:cek_length=)
+      algorithm.decrypt(encrypted_cek)
     end
   end
 end

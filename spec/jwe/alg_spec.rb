@@ -91,6 +91,30 @@ describe JWE::Alg::Rsa15 do
     ciphertext = alg.encrypt('random key')
     expect(alg.decrypt(ciphertext)).to eq 'random key'
   end
+
+  context 'when the expected CEK length is known' do
+    let(:cek) { SecureRandom.random_bytes(16) }
+
+    before { alg.cek_length = 16 }
+
+    it 'decrypts the encrypted key to the original key' do
+      expect(alg.decrypt(alg.encrypt(cek))).to eq cek
+    end
+
+    it 'returns a random CEK of the expected length when unwrapping fails' do
+      malformed = "\x00".b * (key.n.num_bits / 8)
+      result = alg.decrypt(malformed)
+
+      expect(result.bytesize).to eq 16
+      expect(alg.decrypt(malformed)).to_not eq result
+    end
+
+    it 'returns a random CEK of the expected length when the unwrapped key has the wrong length' do
+      result = alg.decrypt(alg.encrypt(SecureRandom.random_bytes(32)))
+
+      expect(result.bytesize).to eq 16
+    end
+  end
 end
 
 [

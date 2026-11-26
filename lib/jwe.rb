@@ -43,8 +43,8 @@ module JWE
       header = JSON.parse(header)
       check_params(header, key)
 
-      cek = Alg.decrypt_cek(header['alg'], key, enc_key)
-      cipher = Enc.for(header['enc'], cek, iv, tag)
+      cipher = Enc.for(header['enc'], nil, iv, tag)
+      cipher.cek = Alg.decrypt_cek(header['alg'], key, enc_key, cek_length: cipher.key_length)
 
       plaintext = cipher.decrypt(ciphertext, payload.split('.').first)
 
