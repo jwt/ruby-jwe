@@ -36,4 +36,24 @@ describe JWE::Zip::Def do
     deflate = JWE::Zip::Def.new
     expect(deflate.decompress(deflated)).to eq 'hello world'
   end
+
+  context 'when limiting the decompressed size' do
+    let(:deflate) { JWE::Zip::Def.new }
+    let(:max) { JWE::Zip::Def::MAX_DECOMPRESSED_SIZE }
+
+    it 'inflates content of exactly the maximum size' do
+      payload = 'a' * max
+      expect(deflate.decompress(deflate.compress(payload))).to eq payload
+    end
+
+    it 'rejects content exceeding the maximum size' do
+      deflated = deflate.compress('a' * (max + 1))
+      expect { deflate.decompress(deflated) }.to raise_error(JWE::InvalidData)
+    end
+
+    it 'rejects RFC 1950 content exceeding the maximum size' do
+      deflated = Zlib::Deflate.deflate('a' * (max + 1))
+      expect { deflate.decompress(deflated) }.to raise_error(JWE::InvalidData)
+    end
+  end
 end

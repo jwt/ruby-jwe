@@ -21,6 +21,15 @@ describe JWE do
     end
   end
 
+  describe 'when DEF compressed content exceeds the maximum size' do
+    it 'raises JWE::InvalidData' do
+      payload = 'a' * (JWE::Zip::Def::MAX_DECOMPRESSED_SIZE + 1)
+      encrypted = JWE.encrypt(payload, rsa_key, zip: 'DEF')
+
+      expect { JWE.decrypt(encrypted, rsa_key) }.to raise_error(JWE::InvalidData)
+    end
+  end
+
   describe 'when using RSA1_5 alg method' do
     let(:parts) { JWE.encrypt(plaintext, rsa_key, alg: 'RSA1_5', enc: enc).split('.') }
 
